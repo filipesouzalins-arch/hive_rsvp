@@ -262,6 +262,8 @@ img { max-width: 100%; display: block; }
 .toast.error { background: #991b1b; }
 @keyframes toastIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
 
+.hero-tagline-center { text-align: center; margin: 22px auto 0; }
+
 @media (max-width: 900px) {
   .home-intro, .details-grid, .rsvp-layout, .admin-grid { grid-template-columns: 1fr; }
   .home-intro { gap: 18px; }

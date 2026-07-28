@@ -34,6 +34,11 @@ function toClientEvent(row) {
     whatsapp: content.whatsapp || { numero: '', habilitado: false, mensagemTemplate: '' },
     secoes: content.secoes || { mapa: true, dressCode: true, contador: true, descricao: true },
     meta: content.meta || null,
+    copy: content.copy || {},
+    template: row.templates
+      ? { tokens: row.templates.tokens || {}, layout: row.templates.layout || {} }
+      : { tokens: {}, layout: {} },
+    templateId: row.template_id || null,
     content
   };
 }
@@ -52,12 +57,12 @@ function toClientRsvp(row) {
 
 const dataService = {
   async getEvent(slug) {
-    const { data, error } = await supabase.from('events').select('*').eq('slug', slug).maybeSingle();
+    const { data, error } = await supabase.from('events').select('*, templates(*)').eq('slug', slug).maybeSingle();
     if (error) throw error;
     return data ? toClientEvent(data) : null;
   },
   async listEvents() {
-    const { data, error } = await supabase.from('events').select('*').order('starts_at', { ascending: true });
+    const { data, error } = await supabase.from('events').select('*, templates(*)').order('starts_at', { ascending: true });
     if (error) throw error;
     return (data || []).map(toClientEvent);
   },
@@ -226,7 +231,16 @@ async function renderEvent(slug) {
   if (!event) return renderNotFound();
   updateMeta(event);
   paintEvent(event);
-  dataService.subscribe(slug, next => {
+  let current = event;
+  dataService.subscribe(slug, async next => {
+    // O payload do realtime não traz o join com templates: preserva o carregado
+    // (ou refetch se o template do evento mudou).
+    if (next.templateId !== current.templateId) {
+      try { next = await dataService.getEvent(slug) || next; } catch { /* mantém o payload */ }
+    } else {
+      next = { ...next, template: current.template };
+    }
+    current = next;
     const scroll = window.scrollY;
     updateMeta(next);
     paintEvent(next);
@@ -234,20 +248,64 @@ async function renderEvent(slug) {
   });
 }
 
+const themeCssLoaded = new Set();
+function ensureThemeCss(cssFile) {
+  if (!cssFile || themeCssLoaded.has(cssFile)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = cssFile;
+  document.head.appendChild(link);
+  themeCssLoaded.add(cssFile);
+}
+
+function tokenStyleVars(tokens) {
+  const vars = [];
+  Object.entries(tokens.colors || {}).forEach(([name, value]) => vars.push(`--tpl-${name}:${value}`));
+  if (tokens.fonts?.serif) vars.push(`--tpl-serif:${tokens.fonts.serif}`);
+  if (tokens.fonts?.sans) vars.push(`--tpl-sans:${tokens.fonts.sans}`);
+  if (tokens.radius) vars.push(`--tpl-radius:${tokens.radius}`);
+  return vars.join(';');
+}
+
+function logoMarkup(logo, event) {
+  const tagline = event.tagline
+    ? `<p class="${esc(logo?.taglineClass || 'f70-tagline')}">${esc(event.tagline)}</p>`
+    : '';
+  if (logo?.type === 'image' && logo.image) {
+    return `<img class="${esc(logo.className || 'feijuca-logo')}" src="${esc(logo.image)}" alt="${esc(event.nome)}" />${tagline}`;
+  }
+  const text = logo?.text || event.nome;
+  const marked = esc(text).replace(/(\d+)\s*$/, '<span>$1</span>');
+  return `<h1 class="${esc(logo?.className || 'f70-mark')}">${marked}</h1>${tagline}`;
+}
+
+function ornamentsMarkup(list) {
+  if (!Array.isArray(list)) return '';
+  return list.map(o => {
+    const parallax = typeof o.parallax === 'number' ? ` data-parallax="${o.parallax}"` : '';
+    const cls = esc(o.className || '');
+    if (o.kind === 'image' && o.value) return `<img class="${cls}" src="${esc(o.value)}" alt=""${parallax} />`;
+    if (o.kind === 'emoji') return `<div class="${cls}" aria-hidden="true"${parallax}>${esc(o.value || '')}</div>`;
+    return `<div class="${cls}" aria-hidden="true"${parallax}></div>`;
+  }).join('');
+}
+
 function paintEvent(event) {
-  const isSat = event.slug === 'sabado';
-  const theme = isSat ? 'theme-sabado' : 'theme-domingo';
+  const layout = event.template.layout || {};
+  const theme = layout.themeClass || 'theme-domingo';
+  ensureThemeCss(layout.cssFile);
+  const tokenStyle = tokenStyleVars(event.template.tokens || {});
+  const btnPrimary = layout.primaryButton || 'btn-blue';
+  const heroImage = layout.heroImage || '/assets/domingo-pattern-organico.jpeg';
+  const copy = event.copy || {};
+  const eyebrow = copy.eyebrow || '';
   const rootPrefix = '/';
   const dateLabel = capitalize(formatDateLong(event.dataHora));
-  const logo = isSat
-    ? `<h1 class="f70-mark">F<span>70</span></h1><p class="f70-tagline">${esc(event.tagline)}</p>`
-    : `<img class="feijuca-logo" src="${rootPrefix}assets/domingo-logo.jpeg" alt="${esc(event.nome)}" /><p class="lead" style="text-align:center;margin:22px auto 0">${esc(event.tagline)}</p>`;
-  const ornaments = isSat
-    ? `<div class="wire-lines"></div><div class="orb chrome" data-parallax=".08"></div><div class="orb check" data-parallax="-.05"></div>`
-    : `<div class="leaf-float leaf-a" aria-hidden="true">🌿</div><div class="leaf-float leaf-b" aria-hidden="true">🌴</div>`;
+  const logo = logoMarkup(layout.logo, event);
+  const ornaments = ornamentsMarkup(layout.ornaments);
 
   app.innerHTML = `
-    <main class="event-page ${theme}">
+    <main class="event-page ${theme}"${tokenStyle ? ` style="${esc(tokenStyle)}"` : ''}>
       <nav class="event-nav">
         <a class="event-nav-brand" href="${rootPrefix}">${esc(event.nome)}</a>
         <div class="event-nav-links">
@@ -258,16 +316,16 @@ function paintEvent(event) {
       </nav>
 
       <section class="hero">
-        <img class="hero-bg" src="${rootPrefix}assets/${isSat ? 'sabado-sala.jpeg' : 'domingo-pattern-organico.jpeg'}" alt="" />
+        <img class="hero-bg" src="${esc(heroImage)}" alt="" />
         <div class="hero-overlay"></div>
         ${ornaments}
         <div class="hero-content">
-          <div class="eyebrow">70 anos do França</div>
+          ${eyebrow ? `<div class="eyebrow">${esc(eyebrow)}</div>` : ''}
           ${logo}
           <div class="hero-date">${esc(dateLabel)} · ${esc(formatTime(event.dataHora))}</div>
           ${event.secoes.contador ? countdownMarkup(event.dataHora) : ''}
           <div class="hero-actions">
-            <a class="btn ${isSat ? 'btn-primary' : 'btn-blue'}" href="#confirmar">Confirmar presença</a>
+            <a class="btn ${btnPrimary}" href="#confirmar">Confirmar presença</a>
             <a class="btn btn-outline" href="#detalhes">Ver detalhes</a>
           </div>
         </div>
@@ -279,13 +337,13 @@ function paintEvent(event) {
         <div class="shell details-grid">
           <div class="fade-up">
             <span class="eyebrow">O encontro</span>
-            <h2 class="section-heading">${isSat ? 'Uma noite à altura dessa história.' : 'Um domingo com o melhor do Brasil.'}</h2>
+            <h2 class="section-heading">${esc(copy.headingDescricao || 'Um encontro preparado com carinho.')}</h2>
             <p class="lead">${esc(event.descricao)}</p>
           </div>
           <div class="detail-stack fade-up">
             <article class="detail-card"><span class="detail-label">Data</span><div class="detail-value">${esc(dateLabel)}</div></article>
             <article class="detail-card"><span class="detail-label">Horário</span><div class="detail-value">A partir das ${esc(formatTime(event.dataHora))}</div></article>
-            <article class="detail-card"><span class="detail-label">Celebração</span><div class="detail-value">${isSat ? 'Balada F70' : 'Feijoada e pagode'}</div></article>
+            <article class="detail-card"><span class="detail-label">Celebração</span><div class="detail-value">${esc(copy.celebracao || event.nome)}</div></article>
           </div>
         </div>
       </section>` : `<div id="detalhes"></div>`}
@@ -295,7 +353,7 @@ function paintEvent(event) {
         <div class="shell">
           <div class="dress-panel fade-up">
             <span class="eyebrow">Dress code</span>
-            <h3>${isSat ? 'Entre no clima da noite.' : 'Todo mundo de branco.'}</h3>
+            <h3>${esc(copy.headingDress || 'Entre no clima.')}</h3>
             <p>${esc(event.dressCode)}</p>
           </div>
         </div>
@@ -308,7 +366,7 @@ function paintEvent(event) {
             <span class="eyebrow">Onde será</span>
             <h2 class="section-heading">O caminho para a celebração.</h2>
             <p class="lead"><strong>${esc(event.local.nome)}</strong><br>${esc(event.local.endereco)}</p>
-            <div class="hero-actions"><a class="btn ${isSat ? 'btn-primary' : 'btn-blue'}" href="${esc(event.local.directionsUrl || event.local.mapsUrl)}" target="_blank" rel="noopener">Como chegar ↗</a></div>
+            <div class="hero-actions"><a class="btn ${btnPrimary}" href="${esc(event.local.directionsUrl || event.local.mapsUrl)}" target="_blank" rel="noopener">Como chegar ↗</a></div>
           </div>
           <div class="map-wrap fade-up">
             <iframe title="Mapa do evento" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${esc(event.local.mapsUrl)}"></iframe>
@@ -334,7 +392,7 @@ function paintEvent(event) {
       <footer class="event-footer">
         <div class="shell footer-inner">
           <div><div class="footer-name">${esc(event.nome)}</div><div>${esc(dateLabel)} · ${esc(formatTime(event.dataHora))}</div></div>
-          <div class="footer-copy">Esperamos você para celebrar os 70 anos do França e transformar esses dois dias em uma memória inesquecível.</div>
+          <div class="footer-copy">${esc(copy.footer || 'Esperamos você para celebrar conosco.')}</div>
         </div>
       </footer>
     </main>`;
@@ -415,6 +473,8 @@ function initParallax() {
 }
 
 function rsvpFormMarkup(event) {
+  const layout = event.template?.layout || {};
+  const btnSubmit = layout.submitButton || layout.primaryButton || 'btn-blue';
   const companionOptions = Array.from({ length: event.maxAcompanhantes + 1 }, (_, n) => `<option value="${n}">${n}</option>`).join('');
   return `<div class="form-card">
     <form id="rsvp-form" novalidate>
@@ -427,7 +487,7 @@ function rsvpFormMarkup(event) {
       </div>
       <div class="form-foot">
         <span class="form-note">Seus dados serão utilizados somente para a organização desta celebração.</span>
-        <button class="btn ${event.slug === 'sabado' ? 'btn-dark' : 'btn-blue'}" type="submit">Confirmar presença</button>
+        <button class="btn ${btnSubmit}" type="submit">Confirmar presença</button>
       </div>
     </form>
   </div>`;
@@ -477,6 +537,7 @@ function initRsvpForm(event) {
 
 function showRsvpSuccess(event, record) {
   const container = document.getElementById('rsvp-container');
+  const btnPrimary = event.template?.layout?.primaryButton || 'btn-blue';
   const message = (event.whatsapp.mensagemTemplate || '')
     .replaceAll('{nome}', record.nome)
     .replaceAll('{evento}', event.nome)
@@ -486,7 +547,7 @@ function showRsvpSuccess(event, record) {
     <div class="success-icon">✓</div>
     <h3>Presença confirmada, ${esc(record.nome.split(' ')[0])}!</h3>
     <p>Registramos sua confirmação para <strong>${esc(event.nome)}</strong>. Agora é só entrar no clima da celebração.</p>
-    ${event.whatsapp.habilitado ? `<a class="btn ${event.slug === 'sabado' ? 'btn-primary' : 'btn-blue'}" target="_blank" rel="noopener" href="${waUrl}">Confirmar também pelo WhatsApp</a>` : ''}
+    ${event.whatsapp.habilitado ? `<a class="btn ${btnPrimary}" target="_blank" rel="noopener" href="${waUrl}">Confirmar também pelo WhatsApp</a>` : ''}
   </div>`;
 }
 
@@ -598,6 +659,7 @@ function adminEditorMarkup(event) {
         <div class="field full"><label>Mensagem do WhatsApp</label><textarea name="whatsappTemplate">${esc(event.whatsapp.mensagemTemplate)}</textarea></div>
       </div>
       <div class="toggle-list">
+        ${toggleMarkup('eventoPublicado','Evento publicado (visível ao público)',event.status === 'published')}
         ${toggleMarkup('sectionContador','Exibir contador regressivo',event.secoes.contador)}
         ${toggleMarkup('sectionDescricao','Exibir apresentação',event.secoes.descricao)}
         ${toggleMarkup('sectionDressCode','Exibir dress code',event.secoes.dressCode)}
@@ -655,6 +717,7 @@ function initAdminEditor(event) {
     try {
       await dataService.updateEvent(event.id, {
         name: fd.get('nome'),
+        status: form.elements.eventoPublicado.checked ? 'published' : 'draft',
         starts_at: new Date(fd.get('dataHora')).toISOString(),
         max_companions: Math.max(0, Math.min(20, Number(fd.get('maxAcompanhantes') || 0))),
         collect_dietary: form.elements.coletaRestricao.checked,
