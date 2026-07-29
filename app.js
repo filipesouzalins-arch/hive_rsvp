@@ -627,6 +627,8 @@ function adminEditorMarkup(event) {
         ${adminField('whatsappNumero','WhatsApp com DDI',event.whatsapp.numero)}
         <div class="field"><label>Máximo de acompanhantes</label><input type="number" name="maxAcompanhantes" min="0" max="20" value="${event.maxAcompanhantes}" /></div>
         <div class="field"><label>Título do campo de mensagem</label><input name="notesLabel" value="${esc(event.copy?.notesLabel || 'Observações')}" /></div>
+        <div class="field full"><label>Título ao compartilhar o link</label><input name="metaTitle" value="${esc(event.meta?.title || '')}" placeholder="Ex.: F70 — Celebração de 70 anos" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">Aparece na prévia do WhatsApp e redes sociais.</small></div>
+        <div class="field full"><label>Descrição ao compartilhar o link</label><textarea name="metaDescription" placeholder="Texto curto exibido abaixo do título na prévia.">${esc(event.meta?.description || '')}</textarea></div>
         <div class="field full"><label>Mensagem do WhatsApp</label><textarea name="whatsappTemplate">${esc(event.whatsapp.mensagemTemplate)}</textarea></div>
       </div>
       <div class="toggle-list">
@@ -688,6 +690,7 @@ function initAdminEditor(event) {
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
       copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel') },
+      meta: { ...(event.content.meta || {}), title: String(fd.get('metaTitle') || '').trim(), description: String(fd.get('metaDescription') || '').trim() },
       secoes: { contador: form.elements.sectionContador.checked, descricao: form.elements.sectionDescricao.checked, dressCode: form.elements.sectionDressCode.checked, mapa: form.elements.sectionMapa.checked }
     };
     const slug = String(fd.get('slug') || '').trim().toLowerCase();
