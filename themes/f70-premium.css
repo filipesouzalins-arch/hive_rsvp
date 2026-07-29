@@ -14,8 +14,7 @@
   background: linear-gradient(180deg, #f5f5f5, #bdbdbd); color: #111111;
 }
 
-/* Hero: fundo preto minimalista (sem onda central), logo centralizado */
-.theme-f70-premium .hero .hero-actions { display: none; }
+/* Hero: logo centralizado (botões do hero removidos globalmente pelo motor) */
 .theme-f70-premium .hero-overlay {
   background:
     linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
