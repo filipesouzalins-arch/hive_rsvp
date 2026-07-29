@@ -139,6 +139,8 @@ img { max-width: 100%; display: block; }
 .map-floating small { opacity: .62; }
 
 .dress-panel { padding: clamp(30px, 6vw, 72px); border-radius: 34px; position: relative; overflow: hidden; }
+.dress-panel > * { position: relative; z-index: 1; }
+.dress-panel::after { z-index: 0; pointer-events: none; }
 .dress-panel h3 { margin: 10px 0 14px; font-family: var(--serif); font-size: clamp(2.2rem, 4vw, 4.3rem); line-height: 1; font-weight: 500; }
 .dress-panel p { max-width: 650px; font-size: 1.08rem; line-height: 1.7; opacity: .78; }
 
@@ -294,7 +296,7 @@ img { max-width: 100%; display: block; }
   .event-nav { top: 10px; width: calc(100% - 16px); padding: 6px; }
   .event-nav-links { width: 100%; justify-content: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
   .event-nav-links a { font-size: .66rem; padding: 8px 8px; white-space: nowrap; }
-  .hero-content { width: calc(100% - 28px); padding-top: 72px; }
+  .hero-content { width: calc(100% - 28px); padding-top: 72px; padding-bottom: 96px; }
   .f70-mark { font-size: clamp(6.6rem, 39vw, 10rem); }
   .orb.chrome { width: 190px; top: 8%; right: -100px; }
   .orb.check { width: 120px; right: -35px; bottom: 14%; background-size: 28px 28px; }

@@ -346,7 +346,7 @@ function paintEvent(event) {
       <section class="section alt" id="confirmar">
         <div class="shell rsvp-layout">
           <div class="fade-up">
-            ${(copy.rsvpEyebrow ?? 'RSVP') ? `<span class="eyebrow">${esc(copy.rsvpEyebrow ?? 'RSVP')}</span>` : ''}
+            ${(copy.rsvpEyebrow ?? 'Confirme sua presença') ? `<span class="eyebrow">${esc(copy.rsvpEyebrow ?? 'Confirme sua presença')}</span>` : ''}
             <h2 class="section-heading">Sua presença faz parte da festa.</h2>
             <p class="lead">Confirme abaixo para que possamos preparar tudo com carinho. A confirmação é válida apenas para este dia.</p>
           </div>
@@ -614,11 +614,13 @@ function adminEditorMarkup(event) {
         ${adminField('dataHora','Data e hora',toLocalInput(event.dataHora),'datetime-local')}
         <div class="field full"><label>Link do formulário</label><input name="slug" value="${esc(event.slug)}" autocapitalize="off" spellcheck="false" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">O convite fica em <b>/&lt;link&gt;</b> (letras minúsculas, números e hífens). Mudar o link invalida o endereço anterior já enviado aos convidados.</small></div>
         <div class="field full"><label>Tagline</label><input name="tagline" value="${esc(event.tagline)}" /></div>
+        <div class="field full"><label>Título da apresentação</label><input name="headingDescricao" value="${esc(event.copy?.headingDescricao || '')}" placeholder="Ex.: Um domingo com o melhor do Brasil." /></div>
         <div class="field full"><label>Descrição</label><textarea name="descricao">${esc(event.descricao)}</textarea></div>
         ${adminField('localNome','Nome do local',event.local.nome)}
         ${adminField('localEndereco','Endereço',event.local.endereco)}
         <div class="field full"><label>URL de incorporação do Maps</label><input name="mapsUrl" value="${esc(event.local.mapsUrl)}" /></div>
         <div class="field full"><label>URL “Como chegar”</label><input name="directionsUrl" value="${esc(event.local.directionsUrl || '')}" /></div>
+        <div class="field full"><label>Título do dress code</label><input name="headingDress" value="${esc(event.copy?.headingDress || '')}" placeholder="Ex.: Todo mundo de branco." /></div>
         <div class="field full"><label>Dress code</label><textarea name="dressCode">${esc(event.dressCode)}</textarea></div>
         ${adminField('whatsappNumero','WhatsApp com DDI',event.whatsapp.numero)}
         <div class="field"><label>Máximo de acompanhantes</label><input type="number" name="maxAcompanhantes" min="0" max="20" value="${event.maxAcompanhantes}" /></div>
@@ -686,7 +688,7 @@ function initAdminEditor(event) {
       dressCode: fd.get('dressCode'),
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
-      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim() },
+      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim() },
       meta: { ...(event.content.meta || {}), title: String(fd.get('metaTitle') || '').trim(), description: String(fd.get('metaDescription') || '').trim() },
       secoes: { contador: form.elements.sectionContador.checked, descricao: form.elements.sectionDescricao.checked, dressCode: form.elements.sectionDressCode.checked, mapa: form.elements.sectionMapa.checked }
     };
