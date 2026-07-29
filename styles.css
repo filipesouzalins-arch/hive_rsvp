@@ -290,8 +290,10 @@ img { max-width: 100%; display: block; }
   .home-title { font-size: clamp(3.1rem, 17vw, 5rem); }
   .event-card { min-height: 470px; border-radius: 28px; }
   .event-card-content { padding: 26px; }
-  .event-nav { top: 10px; padding-left: 14px; }
-  .event-nav-links a:not(.rsvp-nav) { display: none; }
+  /* Menu completo também no mobile (links visíveis conforme as seções ativas) */
+  .event-nav { top: 10px; width: calc(100% - 16px); padding: 6px; }
+  .event-nav-links { width: 100%; justify-content: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .event-nav-links a { font-size: .66rem; padding: 8px 8px; white-space: nowrap; }
   .hero-content { width: calc(100% - 28px); padding-top: 72px; }
   .f70-mark { font-size: clamp(6.6rem, 39vw, 10rem); }
   .orb.chrome { width: 190px; top: 8%; right: -100px; }

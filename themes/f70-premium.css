@@ -109,9 +109,5 @@
 @media (max-width: 640px) {
   .theme-f70-premium .logo-premium { width: min(310px, 80vw); }
   .theme-f70-premium .glow-left { width: 70%; left: -30%; }
-  /* Menu completo também no mobile (Detalhes, Dress code, Local, Confirmar presença) */
-  .theme-f70-premium .event-nav { width: calc(100% - 16px); padding: 6px; }
-  .theme-f70-premium .event-nav-links { width: 100%; justify-content: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
-  .theme-f70-premium .event-nav-links a:not(.rsvp-nav) { display: inline-flex; }
-  .theme-f70-premium .event-nav-links a { font-size: .66rem; padding: 8px 8px; white-space: nowrap; }
+  /* Menu mobile completo agora é padrão do motor (styles.css) */
 }
