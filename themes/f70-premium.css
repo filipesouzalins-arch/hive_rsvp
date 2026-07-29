@@ -102,6 +102,9 @@
 .theme-f70-premium .form-card .field label { opacity: .8; }
 .theme-f70-premium .success-icon { background: var(--tpl-accent, #FFFFFF); color: #111111; }
 
+/* Cartão flutuante do mapa: fundo branco pede texto escuro (o tema herda texto claro) */
+.theme-f70-premium .map-floating { color: #111216; }
+
 /* Rodapé */
 .theme-f70-premium .event-footer .footer-inner { border-color: rgba(255,255,255,.14); }
 
