@@ -1,0 +1,117 @@
+/* Tema: F70 Premium — implementação fiel da especificação gerada pelo ChatGPT.
+   "Tema premium minimalista com ondas luminosas em fundo preto e identidade prata."
+   Escopo: .theme-f70-premium · Tokens via var(--tpl-*). */
+
+.theme-f70-premium {
+  background: var(--tpl-background, #050505);
+  color: var(--tpl-text, #F5F5F5);
+}
+
+/* Navegação: sem marca (o logo já domina o hero), links centrados com destaques */
+.theme-f70-premium .event-nav { justify-content: center; padding: 8px 10px; }
+.theme-f70-premium .event-nav-brand { display: none; }
+.theme-f70-premium .event-nav-links { gap: 6px; }
+.theme-f70-premium .event-nav-links a.rsvp-nav,
+.theme-f70-premium .event-nav-links a.rsvp-nav:hover {
+  background: linear-gradient(180deg, #f5f5f5, #bdbdbd); color: #111111;
+}
+
+/* Hero: fundo preto minimalista (sem onda central), logo centralizado */
+.theme-f70-premium .hero .hero-actions { display: none; }
+.theme-f70-premium .hero-overlay {
+  background:
+    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
+    linear-gradient(to top, var(--tpl-background, #050505) 0%, transparent 28%);
+}
+.theme-f70-premium .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.theme-f70-premium .eyebrow { color: var(--tpl-secondary, #B6B6B6); }
+.theme-f70-premium .eyebrow::before { background: var(--tpl-secondary, #B6B6B6); }
+.theme-f70-premium .hero-date { color: var(--tpl-text-muted, #A5A5A5); }
+
+/* Logo: scale(0.98 → 1) */
+.theme-f70-premium .logo-premium {
+  width: min(480px, 72vw);
+  animation: premiumLogoIn 1.2s ease both;
+}
+@keyframes premiumLogoIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+.theme-f70-premium .tagline-premium {
+  margin: 24px auto 0; max-width: 540px; font-family: var(--tpl-sans, var(--sans));
+  font-weight: 300; letter-spacing: .04em; font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+  color: var(--tpl-text, #F5F5F5); opacity: .9;
+}
+
+/* Ornamentos abstratos: ondas em translateX, glow pulsando, spark */
+.theme-f70-premium .wave-top,
+.theme-f70-premium .wave-bottom {
+  position: absolute; left: -20%; width: 140%; height: 34%; pointer-events: none; z-index: 1; opacity: .5;
+  background: repeating-radial-gradient(ellipse at 50% 50%, transparent 0 14px, rgba(255,255,255,.18) 15px, transparent 16px 30px);
+  mask-image: linear-gradient(to bottom, transparent, #000 40%, #000 60%, transparent);
+}
+.theme-f70-premium .wave-top { top: -4%; animation: premiumWave 10s ease-in-out infinite alternate; }
+.theme-f70-premium .wave-bottom { bottom: -4%; animation: premiumWave 12s ease-in-out infinite alternate-reverse; }
+@keyframes premiumWave { from { transform: translateX(0); } to { transform: translateX(-60px); } }
+.theme-f70-premium .glow-left {
+  position: absolute; left: -12%; top: 30%; width: 46%; aspect-ratio: 1; pointer-events: none; z-index: 1;
+  background: radial-gradient(circle, rgba(255,255,255,.5), transparent 65%);
+  animation: premiumGlow 6s ease-in-out infinite alternate;
+}
+@keyframes premiumGlow { from { opacity: .4; } to { opacity: .8; } }
+
+/* Botões premium */
+.theme-f70-premium .btn-premium,
+.theme-f70-premium .btn-submit-premium {
+  background: linear-gradient(180deg, #f5f5f5, #bdbdbd);
+  color: #111111; padding: 0 36px;
+}
+.theme-f70-premium .btn-premium:hover,
+.theme-f70-premium .btn-submit-premium:hover {
+  box-shadow: 0 10px 30px rgba(255,255,255,.15);
+}
+
+/* Cards: glassmorphism discreto */
+.theme-f70-premium .detail-card,
+.theme-f70-premium .success-card {
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--tpl-border, rgba(255,255,255,.12));
+  border-radius: var(--tpl-radius, 24px);
+}
+.theme-f70-premium .dress-panel {
+  background: var(--tpl-card, #181818);
+  border: 1px solid var(--tpl-border, rgba(255,255,255,.12));
+  color: var(--tpl-text, #F5F5F5);
+}
+.theme-f70-premium .dress-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(255,255,255,.12), transparent 55%);
+}
+
+/* Contador: caixas escuras */
+.theme-f70-premium .count-box { background: #111111; border-color: rgba(255,255,255,.08); }
+.theme-f70-premium .count-number { font-size: clamp(2rem, 4.4vw, 42px); color: #FFFFFF; }
+.theme-f70-premium .count-label { color: var(--tpl-text-muted, #A5A5A5); }
+
+/* Seções e formulário */
+.theme-f70-premium .section.alt { background: var(--tpl-surface, #111111); }
+.theme-f70-premium .form-card {
+  background: rgba(255,255,255,.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--tpl-border, rgba(255,255,255,.12));
+  color: var(--tpl-text, #F5F5F5);
+}
+.theme-f70-premium .form-card .field label { opacity: .8; }
+.theme-f70-premium .success-icon { background: var(--tpl-accent, #FFFFFF); color: #111111; }
+
+/* Rodapé */
+.theme-f70-premium .event-footer .footer-inner { border-color: rgba(255,255,255,.14); }
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .theme-f70-premium .logo-premium { width: min(310px, 80vw); }
+  .theme-f70-premium .glow-left { width: 70%; left: -30%; }
+  /* Menu completo também no mobile (Detalhes, Dress code, Local, Confirmar presença) */
+  .theme-f70-premium .event-nav { width: calc(100% - 16px); padding: 6px; }
+  .theme-f70-premium .event-nav-links { width: 100%; justify-content: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .theme-f70-premium .event-nav-links a:not(.rsvp-nav) { display: inline-flex; }
+  .theme-f70-premium .event-nav-links a { font-size: .66rem; padding: 8px 8px; white-space: nowrap; }
+}

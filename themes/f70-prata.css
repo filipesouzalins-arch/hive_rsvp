@@ -1,0 +1,97 @@
+/* Tema: F70 Prata — leitura Claude das referências (logo prata + ondas em fundo preto).
+   v2: fidelidade à arte do logo — preto absoluto, logo em alta resolução e as curvas
+   laterais da própria arte flutuando nos cantos com movimento fluido.
+   Escopo: .theme-f70-prata · Tokens via var(--tpl-*). */
+
+.theme-f70-prata {
+  background: radial-gradient(ellipse at 50% -10%, #0e0f12, var(--tpl-ink, #050505) 48%, #020203);
+  color: #f2f3f5;
+}
+
+/* Hero — a arte é o fundo: preto puro + curvas em alta, sem foto de fundo */
+.theme-f70-prata .hero-bg { display: none; }
+.theme-f70-prata .hero-overlay {
+  background: radial-gradient(ellipse at 50% 44%, transparent 0 30%, rgba(2,2,3,.55) 78%, #020203 100%);
+}
+.theme-f70-prata .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.theme-f70-prata .eyebrow { color: var(--tpl-silver, #d9dde2); }
+.theme-f70-prata .eyebrow::before { background: var(--tpl-silver, #d9dde2); }
+.theme-f70-prata .hero-date { color: rgba(242,243,245,.85); letter-spacing: .14em; text-transform: uppercase; font-size: .84rem; }
+
+/* Logo em alta resolução (recorte transparente da arte oficial) */
+.theme-f70-prata .prata-logo {
+  width: min(640px, 86vw);
+  filter: drop-shadow(0 0 42px rgba(255,255,255,.16));
+  animation: prataLogoIn 1.6s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes prataLogoIn { from { opacity: 0; transform: scale(.95) translateY(16px); } to { opacity: 1; transform: none; } }
+.theme-f70-prata .prata-tagline {
+  margin: 8px auto 0; max-width: 560px; font-family: var(--tpl-serif, var(--serif));
+  font-style: italic; font-size: clamp(1.1rem, 2.2vw, 1.6rem); line-height: 1.35;
+  color: rgba(217,221,226,.8);
+}
+
+/* Curvas laterais da arte do logo — flutuação fluida + shimmer, nos cantos como na referência */
+.theme-f70-prata .prata-curva {
+  position: absolute; pointer-events: none; z-index: 1;
+  animation: prataFlow 11s ease-in-out infinite alternate;
+  will-change: transform, filter;
+}
+.theme-f70-prata .curva-direita { width: min(52vw, 720px); top: -7%; right: -7%; }
+.theme-f70-prata .curva-esquerda { width: min(46vw, 640px); bottom: -7%; left: -7%; animation-delay: -5.4s; animation-duration: 14s; }
+@keyframes prataFlow {
+  0%   { translate: 0 0; rotate: 0deg; filter: brightness(1); }
+  50%  { filter: brightness(1.22); }
+  100% { translate: -20px 14px; rotate: 1.8deg; filter: brightness(1); }
+}
+.theme-f70-prata .prata-spark {
+  position: absolute; width: 24px; aspect-ratio: 1; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(circle, rgba(255,255,255,.95) 0 12%, transparent 60%),
+    linear-gradient(to right, transparent 46%, rgba(255,255,255,.85) 50%, transparent 54%),
+    linear-gradient(to bottom, transparent 46%, rgba(255,255,255,.85) 50%, transparent 54%);
+  animation: prataTwinkle 3.6s ease-in-out infinite;
+}
+.theme-f70-prata .spark-a { top: 22%; left: 14%; }
+.theme-f70-prata .spark-b { bottom: 28%; right: 18%; width: 17px; animation-delay: -1.6s; }
+@keyframes prataTwinkle { 0%, 100% { opacity: .2; transform: scale(.8); } 50% { opacity: .95; transform: scale(1.15); } }
+
+/* Botão prata líquida */
+.theme-f70-prata .btn-prata {
+  background: linear-gradient(145deg, #ffffff 0%, var(--tpl-chrome, #f4f6f8) 40%, #c3c8cf 78%, #9aa0a8 100%);
+  color: #0a0b0d; box-shadow: 0 14px 44px rgba(255,255,255,.14);
+}
+
+/* Contador */
+.theme-f70-prata .count-box { background: rgba(255,255,255,.045); border-color: rgba(217,221,226,.2); }
+.theme-f70-prata .count-number { color: #ffffff; text-shadow: 0 0 18px rgba(255,255,255,.35); }
+.theme-f70-prata .count-label { color: var(--tpl-muted, #a7abb2); }
+
+/* Seções */
+.theme-f70-prata .section.alt { background: #0b0c0e; }
+.theme-f70-prata .detail-card { background: rgba(255,255,255,.04); border-color: rgba(217,221,226,.16); }
+.theme-f70-prata .dress-panel {
+  background: linear-gradient(145deg, #ffffff 0%, #e7eaee 45%, #c0c6cd 100%);
+  color: #0a0b0d;
+}
+.theme-f70-prata .dress-panel::after {
+  content: ''; position: absolute; inset: -30% -14% auto auto; width: 58%; height: 170%;
+  background: url('../assets/f70-prata/curva-direita.webp') center/contain no-repeat;
+  opacity: .16; filter: invert(1); transform: rotate(10deg);
+}
+
+/* Formulário e sucesso */
+.theme-f70-prata .form-card { background: #f4f5f7; color: #101216; }
+.theme-f70-prata .success-card { background: rgba(255,255,255,.06); border: 1px solid rgba(217,221,226,.2); }
+.theme-f70-prata .success-icon { background: #ffffff; color: #0a0b0d; }
+
+/* Rodapé com fio de prata */
+.theme-f70-prata .event-footer .footer-inner { border-color: rgba(217,221,226,.3); }
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .theme-f70-prata .prata-logo { width: min(360px, 88vw); }
+  .theme-f70-prata .curva-direita { width: 72vw; right: -22%; top: -4%; opacity: .75; }
+  .theme-f70-prata .curva-esquerda { width: 62vw; left: -20%; bottom: -3%; opacity: .75; }
+  .theme-f70-prata .spark-a { left: 7%; top: 14%; }
+}

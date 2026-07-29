@@ -296,7 +296,7 @@ function paintEvent(event) {
   ensureThemeCss(layout.cssFile);
   const tokenStyle = tokenStyleVars(event.template.tokens || {});
   const btnPrimary = layout.primaryButton || 'btn-blue';
-  const heroImage = layout.heroImage || '/assets/domingo-pattern-organico.jpeg';
+  const heroImage = 'heroImage' in layout ? layout.heroImage : '/assets/domingo-pattern-organico.jpeg';
   const copy = event.copy || {};
   const eyebrow = copy.eyebrow || '';
   const rootPrefix = '/';
@@ -310,13 +310,14 @@ function paintEvent(event) {
         <a class="event-nav-brand" href="${rootPrefix}">${esc(event.nome)}</a>
         <div class="event-nav-links">
           <a href="#detalhes">Detalhes</a>
+          ${event.secoes.dressCode ? '<a href="#dresscode">Dress code</a>' : ''}
           ${event.secoes.mapa ? '<a href="#local">Local</a>' : ''}
           <a class="rsvp-nav" href="#confirmar">Confirmar presença</a>
         </div>
       </nav>
 
       <section class="hero">
-        <img class="hero-bg" src="${esc(heroImage)}" alt="" />
+        ${heroImage ? `<img class="hero-bg" src="${esc(heroImage)}" alt="" />` : ''}
         <div class="hero-overlay"></div>
         ${ornaments}
         <div class="hero-content">
@@ -349,7 +350,7 @@ function paintEvent(event) {
       </section>` : `<div id="detalhes"></div>`}
 
       ${event.secoes.dressCode ? `
-      <section class="section alt">
+      <section class="section alt" id="dresscode">
         <div class="shell">
           <div class="dress-panel fade-up">
             <span class="eyebrow">Dress code</span>
