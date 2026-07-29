@@ -70,6 +70,15 @@ const dataService = {
     const { error } = await supabase.from('events').update(row).eq('id', eventId);
     if (error) throw error;
   },
+  async createEvent(row) {
+    const { data, error } = await supabase.from('events').insert(row).select('*, templates(*)').single();
+    if (error) throw error;
+    return toClientEvent(data);
+  },
+  async deleteEvent(eventId) {
+    const { error } = await supabase.from('events').delete().eq('id', eventId);
+    if (error) throw error;
+  },
   async addRsvp(event, rsvp) {
     const { error } = await supabase.from('rsvps').insert({
       event_id: event.id,
@@ -143,51 +152,12 @@ function updateMeta(event) {
 }
 
 function renderHome() {
-  document.title = 'França 70 — Dois dias para celebrar';
+  document.title = 'hive RSVP';
   app.innerHTML = `
     <main class="home">
-      <div class="shell">
-        <header class="home-top">
-          <div>
-            <div class="home-mark">França 70</div>
-            <div class="home-kicker">08 & 09 de agosto de 2026</div>
-          </div>
-          <a class="btn btn-outline" href="./admin/" aria-label="Abrir painel administrativo">Área reservada</a>
-        </header>
-
-        <section class="home-intro fade-up visible">
-          <h1 class="home-title">Uma história.<br><em>Dois dias</em><br>para celebrar.</h1>
-          <p class="home-copy">Escolha o convite do evento que você recebeu, confira todos os detalhes e confirme sua presença. Estamos preparando dois encontros muito especiais.</p>
-        </section>
-
-        <section class="event-grid" aria-label="Escolha o evento">
-          <a href="./sabado/" class="event-card fade-up visible" aria-label="Abrir convite de sábado F70">
-            <img class="event-card-bg" src="./assets/sabado-sala.jpeg" alt="Ambiente preto e branco da festa F70" />
-            <span class="card-number">01</span>
-            <div class="event-card-content">
-              <div class="card-day">Sábado · 08 de agosto</div>
-              <h2 class="card-title">F70</h2>
-              <div class="card-meta"><span>21h</span><span>Balada · Preto, branco e prata</span></div>
-              <div class="card-action">Ver convite <span>→</span></div>
-            </div>
-          </a>
-
-          <a href="./domingo/" class="event-card fade-up visible" aria-label="Abrir convite de domingo Feijuca do França">
-            <img class="event-card-bg" src="./assets/domingo-logo.jpeg" alt="Identidade visual da Feijuca do França" />
-            <span class="card-number">02</span>
-            <div class="event-card-content">
-              <div class="card-day">Domingo · 09 de agosto</div>
-              <h2 class="card-title">Feijuca<br>do França</h2>
-              <div class="card-meta"><span>12h</span><span>Feijoada · Pagode · Dress code branco</span></div>
-              <div class="card-action">Ver convite <span>→</span></div>
-            </div>
-          </a>
-        </section>
-
-        <footer class="home-footer">
-          <span>Uma celebração pensada nos detalhes.</span>
-          <span>Confirmações individuais para cada dia.</span>
-        </footer>
+      <div class="shell hive-landing">
+        <h1 class="hive-mark">hive RSVP</h1>
+        <a class="btn btn-outline" href="./admin/" aria-label="Abrir painel administrativo">Área reservada</a>
       </div>
     </main>`;
 }
@@ -299,7 +269,6 @@ function paintEvent(event) {
   const heroImage = 'heroImage' in layout ? layout.heroImage : '/assets/domingo-pattern-organico.jpeg';
   const copy = event.copy || {};
   const eyebrow = copy.eyebrow || '';
-  const rootPrefix = '/';
   const dateLabel = capitalize(formatDateLong(event.dataHora));
   const logo = logoMarkup(layout.logo, event);
   const ornaments = ornamentsMarkup(layout.ornaments);
@@ -307,7 +276,6 @@ function paintEvent(event) {
   app.innerHTML = `
     <main class="event-page ${theme}"${tokenStyle ? ` style="${esc(tokenStyle)}"` : ''}>
       <nav class="event-nav">
-        <a class="event-nav-brand" href="${rootPrefix}">${esc(event.nome)}</a>
         <div class="event-nav-links">
           <a href="#detalhes">Detalhes</a>
           ${event.secoes.dressCode ? '<a href="#dresscode">Dress code</a>' : ''}
@@ -648,6 +616,7 @@ function adminEditorMarkup(event) {
       <div class="admin-form-grid">
         ${adminField('nome','Nome do evento',event.nome)}
         ${adminField('dataHora','Data e hora',toLocalInput(event.dataHora),'datetime-local')}
+        <div class="field full"><label>Link do formulário</label><input name="slug" value="${esc(event.slug)}" autocapitalize="off" spellcheck="false" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">O convite fica em <b>/&lt;link&gt;</b> (letras minúsculas, números e hífens). Mudar o link invalida o endereço anterior já enviado aos convidados.</small></div>
         <div class="field full"><label>Tagline</label><input name="tagline" value="${esc(event.tagline)}" /></div>
         <div class="field full"><label>Descrição</label><textarea name="descricao">${esc(event.descricao)}</textarea></div>
         ${adminField('localNome','Nome do local',event.local.nome)}
@@ -670,6 +639,10 @@ function adminEditorMarkup(event) {
         ${toggleMarkup('whatsappHabilitado','Exibir confirmação pelo WhatsApp',event.whatsapp.habilitado)}
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Salvar alterações</button><button class="btn btn-outline" type="button" id="change-password">Alterar senha</button></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #2a2c33;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-outline" type="button" id="duplicate-event">Duplicar como novo evento</button>
+        <button class="btn btn-danger" type="button" id="delete-event">Excluir evento</button>
+      </div>
     </form>
   </section>`;
 }
@@ -717,9 +690,14 @@ function initAdminEditor(event) {
       copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel') },
       secoes: { contador: form.elements.sectionContador.checked, descricao: form.elements.sectionDescricao.checked, dressCode: form.elements.sectionDressCode.checked, mapa: form.elements.sectionMapa.checked }
     };
+    const slug = String(fd.get('slug') || '').trim().toLowerCase();
+    if (!/^[a-z0-9][a-z0-9-]{1,58}$/.test(slug)) {
+      return toast('Link inválido: use só letras minúsculas, números e hífens (mín. 2 caracteres).', true);
+    }
     try {
       await dataService.updateEvent(event.id, {
         name: fd.get('nome'),
+        slug,
         status: form.elements.eventoPublicado.checked ? 'published' : 'draft',
         starts_at: new Date(fd.get('dataHora')).toISOString(),
         max_companions: Math.max(0, Math.min(20, Number(fd.get('maxAcompanhantes') || 0))),
@@ -727,10 +705,46 @@ function initAdminEditor(event) {
         content
       });
       toast('Alterações salvas e refletidas no convite.');
-      setTimeout(() => paintAdmin(event.slug), 500);
+      setTimeout(() => paintAdmin(slug), 500);
     } catch (err) {
       console.error(err);
-      toast('Não foi possível salvar as alterações.', true);
+      toast(err?.code === '23505' ? 'Já existe um evento com esse link.' : 'Não foi possível salvar as alterações.', true);
+    }
+  });
+  document.getElementById('duplicate-event').addEventListener('click', async () => {
+    const novoSlug = String(prompt('Link (slug) do novo evento — ex.: casamento-ana:') || '').trim().toLowerCase();
+    if (!novoSlug) return;
+    if (!/^[a-z0-9][a-z0-9-]{1,58}$/.test(novoSlug)) return toast('Link inválido: use só letras minúsculas, números e hífens.', true);
+    const novoNome = String(prompt('Nome do novo evento:', event.nome) || '').trim();
+    if (!novoNome) return;
+    try {
+      await dataService.createEvent({
+        slug: novoSlug,
+        status: 'draft',
+        name: novoNome,
+        starts_at: new Date(event.dataHora).toISOString(),
+        template_id: event.templateId,
+        max_companions: event.maxAcompanhantes,
+        collect_dietary: event.coletaRestricao,
+        content: event.content
+      });
+      toast('Evento criado como rascunho. Publique quando estiver pronto.');
+      paintAdmin(novoSlug);
+    } catch (err) {
+      console.error(err);
+      toast(err?.code === '23505' ? 'Já existe um evento com esse link.' : 'Não foi possível duplicar o evento.', true);
+    }
+  });
+  document.getElementById('delete-event').addEventListener('click', async () => {
+    if (!confirm(`Excluir o evento "${event.nome}" (/${event.slug})? Todas as confirmações deste evento serão apagadas junto. O tema visual permanece na biblioteca.`)) return;
+    if (!confirm('Tem certeza? Esta ação não pode ser desfeita.')) return;
+    try {
+      await dataService.deleteEvent(event.id);
+      toast('Evento excluído.');
+      paintAdmin();
+    } catch (err) {
+      console.error(err);
+      toast('Não foi possível excluir o evento.', true);
     }
   });
   document.getElementById('change-password').addEventListener('click', async () => {

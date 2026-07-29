@@ -7,9 +7,7 @@
   color: var(--tpl-text, #F5F5F5);
 }
 
-/* Navegação: sem marca (o logo já domina o hero), links centrados com destaques */
-.theme-f70-premium .event-nav { justify-content: center; padding: 8px 10px; }
-.theme-f70-premium .event-nav-brand { display: none; }
+/* Navegação: destaques (marca removida globalmente pelo motor) */
 .theme-f70-premium .event-nav-links { gap: 6px; }
 .theme-f70-premium .event-nav-links a.rsvp-nav,
 .theme-f70-premium .event-nav-links a.rsvp-nav:hover {
