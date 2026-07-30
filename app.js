@@ -35,6 +35,7 @@ function toClientEvent(row) {
     secoes: content.secoes || { mapa: true, dressCode: true, contador: true, descricao: true },
     meta: content.meta || null,
     copy: content.copy || {},
+    gift: content.gift || { enabled: false, title: '', text: '', institutions: [] },
     template: row.templates
       ? { tokens: row.templates.tokens || {}, layout: row.templates.layout || {} }
       : { tokens: {}, layout: {} },
@@ -51,6 +52,8 @@ function toClientRsvp(row) {
     acompanhantes: Number(row.companions || 0),
     restricaoAlimentar: row.dietary || '',
     observacoes: row.notes || '',
+    presenteInstituicao: row.gift_institution || '',
+    presenteValor: row.gift_amount != null ? Number(row.gift_amount) : null,
     criadoEm: row.created_at
   };
 }
@@ -86,7 +89,9 @@ const dataService = {
       phone: rsvp.telefone,
       companions: rsvp.acompanhantes,
       dietary: rsvp.restricaoAlimentar || null,
-      notes: rsvp.observacoes || null
+      notes: rsvp.observacoes || null,
+      gift_institution: rsvp.presenteInstituicao || null,
+      gift_amount: rsvp.presenteValor ?? null
     });
     if (error) throw error;
     return rsvp;
@@ -450,6 +455,7 @@ function rsvpFormMarkup(event) {
         ${event.coletaRestricao ? '<div class="field full"><label for="restricao">Restrição alimentar <small>(opcional)</small></label><input id="restricao" name="restricaoAlimentar" maxlength="300" placeholder="Ex.: vegetariano, alergia a amendoim..." /></div>' : ''}
         <div class="field full"><label for="observacoes">${esc(event.copy?.notesLabel || 'Observações')} <small>(opcional)</small></label><textarea id="observacoes" name="observacoes" maxlength="1000" placeholder="Escreva aqui alguma informação importante."></textarea></div>
       </div>
+      ${giftBlockMarkup(event)}
       <div class="form-foot">
         <span class="form-note">Seus dados serão utilizados somente para a organização desta celebração.</span>
         <button class="btn ${btnSubmit}" type="submit">Confirmar presença</button>
@@ -458,11 +464,78 @@ function rsvpFormMarkup(event) {
   </div>`;
 }
 
+function giftBlockMarkup(event) {
+  const gift = event.gift || {};
+  const institutions = gift.institutions || [];
+  if (!gift.enabled || !institutions.length) return '';
+  const copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+  return `<div class="gift-block">
+    <div class="gift-title">${esc(gift.title || 'Sugestão de presente')}</div>
+    ${gift.text ? `<p class="gift-text">${esc(gift.text)}</p>` : ''}
+    <div class="gift-options">
+      ${institutions.map(i => `
+      <label class="gift-option">
+        <input type="checkbox" class="gift-check" value="${esc(`${i.nome}${i.cnpj ? ` — CNPJ ${i.cnpj}` : ''}`)}" />
+        <span class="gift-option-body">
+          <strong>${esc(i.nome)}</strong>
+          ${i.cnpj ? `<span class="gift-cnpj">CNPJ ${esc(i.cnpj)}</span>` : ''}
+          ${i.pix ? `<span class="gift-pix">Chave PIX: <code>${esc(i.pix)}</code><button type="button" class="gift-copy" data-pix="${esc(i.pix)}" aria-label="Copiar chave PIX" title="Copiar chave PIX">${copyIcon}</button></span>` : ''}
+        </span>
+      </label>`).join('')}
+    </div>
+    <span class="field-error" data-error="instituicao"></span>
+    <div class="form-grid" style="margin-top:12px">
+      <div class="field"><label for="valorPresente">Valor (R$) <small>(opcional)</small></label><input id="valorPresente" name="valorPresente" inputmode="decimal" maxlength="12" placeholder="Ex.: 100,00" /><span class="field-error" data-error="valorPresente"></span></div>
+    </div>
+  </div>`;
+}
+
+async function copiarTexto(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return true;
+  } catch {
+    // Fallback para navegadores embutidos (WhatsApp/Instagram) sem clipboard API
+    try {
+      const area = document.createElement('textarea');
+      area.value = texto;
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
+function parseValor(texto) {
+  const limpo = String(texto).replace(/[^\d.,]/g, '');
+  if (!limpo) return NaN;
+  const normalizado = limpo.includes(',')
+    ? limpo.replaceAll('.', '').replace(',', '.')
+    : limpo;
+  return Number(normalizado);
+}
+
 function initRsvpForm(event) {
   const form = document.getElementById('rsvp-form');
   if (!form) return;
   const phone = form.querySelector('#telefone');
   phone.addEventListener('input', () => phone.value = phoneMask(phone.value));
+  // Doação: seleção única (clicar de novo desmarca) e cópia da chave PIX
+  form.querySelectorAll('.gift-check').forEach(chk => chk.addEventListener('change', () => {
+    if (chk.checked) form.querySelectorAll('.gift-check').forEach(outro => { if (outro !== chk) outro.checked = false; });
+  }));
+  form.querySelectorAll('.gift-copy').forEach(btn => btn.addEventListener('click', async e => {
+    e.preventDefault();
+    e.stopPropagation();
+    const ok = await copiarTexto(btn.dataset.pix);
+    toast(ok ? 'Chave PIX copiada.' : 'Não foi possível copiar a chave PIX.', !ok);
+  }));
   let submitting = false;
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -471,6 +544,15 @@ function initRsvpForm(event) {
     const errors = {};
     if (!String(data.nome || '').trim() || String(data.nome).trim().length < 3) errors.nome = 'Digite seu nome completo.';
     if (digits(data.telefone).length < 10) errors.telefone = 'Digite um WhatsApp válido.';
+    const instituicao = String(form.querySelector('.gift-check:checked')?.value || '').trim();
+    const valorTexto = String(data.valorPresente || '').trim();
+    let presenteValor = null;
+    if (valorTexto) {
+      const valor = parseValor(valorTexto);
+      if (!Number.isFinite(valor) || valor < 0) errors.valorPresente = 'Digite um valor válido, ex.: 100,00.';
+      else if (!instituicao) errors.instituicao = 'Escolha a instituição para o valor indicado.';
+      else presenteValor = Math.round(valor * 100) / 100;
+    }
     form.querySelectorAll('[data-error]').forEach(el => el.textContent = errors[el.dataset.error] || '');
     if (Object.keys(errors).length) return;
 
@@ -484,7 +566,9 @@ function initRsvpForm(event) {
         telefone: String(data.telefone).trim(),
         acompanhantes: Number(data.acompanhantes || 0),
         restricaoAlimentar: String(data.restricaoAlimentar || '').trim(),
-        observacoes: String(data.observacoes || '').trim()
+        observacoes: String(data.observacoes || '').trim(),
+        presenteInstituicao: instituicao,
+        presenteValor
       });
       showRsvpSuccess(event, record);
     } catch (err) {
@@ -512,6 +596,7 @@ function showRsvpSuccess(event, record) {
     <div class="success-icon">✓</div>
     <h3>Presença confirmada, ${esc(record.nome.split(' ')[0])}!</h3>
     <p>Registramos sua confirmação para <strong>${esc(event.nome)}</strong>. Agora é só entrar no clima da celebração.</p>
+    ${record.presenteInstituicao ? `<p>Obrigado por apoiar <strong>"${esc(record.presenteInstituicao.split(' — CNPJ')[0])}"</strong> com sua doação.</p>` : ''}
     ${event.whatsapp.habilitado ? `<a class="btn ${btnPrimary}" target="_blank" rel="noopener" href="${waUrl}">Confirmar também pelo WhatsApp</a>` : ''}
   </div>`;
 }
@@ -628,6 +713,9 @@ function adminEditorMarkup(event) {
         <div class="field full"><label>Título ao compartilhar o link</label><input name="metaTitle" value="${esc(event.meta?.title || '')}" placeholder="Ex.: F70 — Celebração de 70 anos" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">Aparece na prévia do WhatsApp e redes sociais.</small></div>
         <div class="field full"><label>Descrição ao compartilhar o link</label><textarea name="metaDescription" placeholder="Texto curto exibido abaixo do título na prévia.">${esc(event.meta?.description || '')}</textarea></div>
         <div class="field full"><label>Texto do rodapé</label><textarea name="copyFooter" placeholder="Mensagem exibida no rodapé do convite.">${esc(event.copy?.footer || '')}</textarea></div>
+        <div class="field full"><label>Título da sugestão de presente</label><input name="giftTitle" value="${esc(event.gift?.title || '')}" placeholder="Ex.: Sugestão de presente — Escolha sua instituição" /></div>
+        <div class="field full"><label>Texto da sugestão de presente</label><textarea name="giftText" placeholder="Mensagem exibida acima da escolha da instituição.">${esc(event.gift?.text || '')}</textarea></div>
+        <div class="field full"><label>Instituições (uma por linha: Nome | CNPJ | Chave PIX)</label><textarea name="giftInstitutions" placeholder="CADEFI — Centro de Apoio ao Deficiente Físico | 18.908.809/0001-81 | 18908809000181">${esc((event.gift?.institutions || []).map(i => `${i.nome} | ${i.cnpj || ''} | ${i.pix || ''}`).join('\n'))}</textarea></div>
         <div class="field full"><label>Mensagem do WhatsApp</label><textarea name="whatsappTemplate">${esc(event.whatsapp.mensagemTemplate)}</textarea></div>
       </div>
       <div class="toggle-list">
@@ -637,6 +725,7 @@ function adminEditorMarkup(event) {
         ${toggleMarkup('sectionDressCode','Exibir dress code',event.secoes.dressCode)}
         ${toggleMarkup('sectionMapa','Exibir localização e mapa',event.secoes.mapa)}
         ${toggleMarkup('coletaRestricao','Perguntar restrição alimentar no formulário',event.coletaRestricao)}
+        ${toggleMarkup('giftEnabled','Exibir sugestão de presente',!!event.gift?.enabled)}
         ${toggleMarkup('whatsappHabilitado','Exibir confirmação pelo WhatsApp',event.whatsapp.habilitado)}
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-primary" type="submit">Salvar alterações</button><button class="btn btn-outline" type="button" id="change-password">Alterar senha</button></div>
@@ -670,7 +759,7 @@ function adminRsvpMarkup(event, rsvps) {
 function rsvpItemsMarkup(event, items) {
   if (!items.length) return '<div class="empty">Nenhuma presença confirmada até o momento.</div>';
   return items.map(item => `<article class="rsvp-item" data-rsvp-search="${esc(`${item.nome} ${item.telefone}`.toLowerCase())}">
-    <div><strong>${esc(item.nome)}</strong><div class="rsvp-meta">${esc(item.telefone)} · ${Number(item.acompanhantes || 0)} acompanhante(s)<br>${new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(new Date(item.criadoEm))}${item.restricaoAlimentar ? `<br>Restrição: ${esc(item.restricaoAlimentar)}` : ''}${item.observacoes ? `<br>Obs.: ${esc(item.observacoes)}` : ''}</div></div>
+    <div><strong>${esc(item.nome)}</strong><div class="rsvp-meta">${esc(item.telefone)} · ${Number(item.acompanhantes || 0)} acompanhante(s)<br>${new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(new Date(item.criadoEm))}${item.restricaoAlimentar ? `<br>Restrição: ${esc(item.restricaoAlimentar)}` : ''}${item.presenteInstituicao ? `<br>Presente: ${esc(item.presenteInstituicao)}${item.presenteValor != null ? ` · R$ ${item.presenteValor.toFixed(2).replace('.', ',')}` : ''}` : ''}${item.observacoes ? `<br>Obs.: ${esc(item.observacoes)}` : ''}</div></div>
     <button class="rsvp-delete" data-delete-rsvp="${esc(item.id)}" aria-label="Excluir confirmação">×</button>
   </article>`).join('');
 }
@@ -690,6 +779,19 @@ function initAdminEditor(event) {
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
       copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim() },
       meta: { ...(event.content.meta || {}), title: String(fd.get('metaTitle') || '').trim(), description: String(fd.get('metaDescription') || '').trim() },
+      gift: {
+        ...(event.content.gift || {}),
+        enabled: form.elements.giftEnabled.checked,
+        title: String(fd.get('giftTitle') || '').trim(),
+        text: String(fd.get('giftText') || '').trim(),
+        institutions: String(fd.get('giftInstitutions') || '').split('\n')
+          .map(linha => linha.trim()).filter(Boolean)
+          .map(linha => {
+            const [nome, cnpj, pix] = linha.split('|').map(parte => parte.trim());
+            return { nome: nome || '', cnpj: cnpj || '', pix: pix || digits(cnpj || '') };
+          })
+          .filter(inst => inst.nome)
+      },
       secoes: { contador: form.elements.sectionContador.checked, descricao: form.elements.sectionDescricao.checked, dressCode: form.elements.sectionDressCode.checked, mapa: form.elements.sectionMapa.checked }
     };
     const slug = String(fd.get('slug') || '').trim().toLowerCase();
@@ -780,8 +882,8 @@ function initAdminRsvps(event, rsvps) {
 }
 
 function exportCsv(event, rsvps) {
-  const rows = [['Nome','Telefone','Acompanhantes','Restrição alimentar','Observações','Confirmado em']];
-  rsvps.forEach(item => rows.push([item.nome,item.telefone,item.acompanhantes,item.restricaoAlimentar || '',item.observacoes || '',item.criadoEm]));
+  const rows = [['Nome','Telefone','Acompanhantes','Restrição alimentar','Instituição (presente)','Valor presente (R$)','Observações','Confirmado em']];
+  rsvps.forEach(item => rows.push([item.nome,item.telefone,item.acompanhantes,item.restricaoAlimentar || '',item.presenteInstituicao || '',item.presenteValor != null ? String(item.presenteValor.toFixed(2)).replace('.', ',') : '',item.observacoes || '',item.criadoEm]));
   const csv = '﻿' + rows.map(row => row.map(cell => `"${String(cell ?? '').replaceAll('"','""')}"`).join(';')).join('\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const link = document.createElement('a');

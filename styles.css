@@ -158,6 +158,19 @@ img { max-width: 100%; display: block; }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: currentColor; box-shadow: 0 0 0 4px rgba(29,64,175,.1); }
 .field-error { color: #b42318; font-size: .75rem; min-height: 1em; }
 .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 20px; }
+.gift-block { margin-top: 24px; padding-top: 20px; border-top: 1px dashed rgba(120,120,120,.4); }
+.gift-title { font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; opacity: .82; margin-bottom: 6px; }
+.gift-text { font-size: .88rem; line-height: 1.6; opacity: .72; margin: 0 0 16px; }
+.gift-options { display: grid; gap: 10px; }
+.gift-option { display: flex; gap: 12px; align-items: flex-start; border: 1px solid rgba(120,120,120,.35); border-radius: 14px; padding: 14px; cursor: pointer; transition: border-color .2s ease, background .2s ease; }
+.gift-option:has(.gift-check:checked) { border-color: currentColor; background: rgba(120,120,120,.09); }
+.gift-check { margin-top: 3px; width: 17px; height: 17px; flex: 0 0 auto; cursor: pointer; }
+.gift-option-body { display: grid; gap: 5px; font-size: .92rem; }
+.gift-cnpj { font-size: .78rem; opacity: .66; }
+.gift-pix { display: flex; align-items: center; gap: 8px; font-size: .8rem; opacity: .88; flex-wrap: wrap; }
+.gift-pix code { background: rgba(120,120,120,.15); padding: 3px 8px; border-radius: 7px; font-size: .8rem; letter-spacing: .02em; }
+.gift-copy { border: 1px solid rgba(120,120,120,.42); background: transparent; color: inherit; border-radius: 8px; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s ease; }
+.gift-copy:hover { background: rgba(120,120,120,.14); }
 .form-note { font-size: .76rem; opacity: .55; max-width: 320px; }
 .success-card { padding: 32px; border-radius: 26px; text-align: center; animation: successIn .55s cubic-bezier(.2,.8,.2,1); }
 @keyframes successIn { from{opacity:0;transform:scale(.95) translateY(12px)} to{opacity:1;transform:none} }
