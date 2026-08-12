@@ -50,9 +50,10 @@ Siga o formato de [CONTRACT.md](CONTRACT.md) — é o mesmo shape das colunas `t
 ## 4. Gere os arquivos
 
 1. **`assets/<slug>/`** — copie a arte original para lá (ex.: `arte.jpeg`).
-2. **`<slug>/index.html`** — shell padrão (copie de `sabado/index.html` e ajuste):
-   troque `window.__ROUTE__` para o slug e os `<meta>` (title, description, theme-color).
-3. **`themes/<slug>.css`** — tema escopado. TODAS as regras começam com `.theme-<slug>`.
+2. **`themes/<slug>.css`** — tema escopado. TODAS as regras começam com `.theme-<slug>`.
+   **NÃO crie pasta física para o evento**: as rotas resolvem pela função Vercel
+   (`api/invite.js`), que também injeta o título/descrição de compartilhamento (WhatsApp/OG)
+   a partir de `content.meta` do evento.
 
 ### Checklist obrigatório do CSS (características do layout base)
 

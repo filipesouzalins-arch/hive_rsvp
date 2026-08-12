@@ -1,0 +1,103 @@
+/* Tema: Thay 29 — Verão Europeu. Aquarela riviera: rosa pastel, verde-oliva e nude,
+   com borboletas voando pelo hero. Gerado pela skill /novo-convite a partir de
+   assets/thay-29/arte.jpeg. Escopo: .theme-thay-29 · Tokens via var(--tpl-*). */
+
+.theme-thay-29 {
+  background: var(--tpl-creme, #fdf8f3);
+  color: var(--tpl-oliva, #6b6d3f);
+}
+
+/* Navegação clara */
+.theme-thay-29 .event-nav { background: rgba(253,248,243,.82); color: var(--tpl-oliva, #6b6d3f); border-color: rgba(107,109,63,.18); }
+.theme-thay-29 .event-nav-links a { color: rgba(107,109,63,.75); }
+.theme-thay-29 .event-nav-links a:hover { color: var(--tpl-oliva, #6b6d3f); background: rgba(107,109,63,.09); }
+.theme-thay-29 .event-nav-links a.rsvp-nav,
+.theme-thay-29 .event-nav-links a.rsvp-nav:hover { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Hero: branco-creme com listras pastéis ecoando a placa do brasão */
+.theme-thay-29 .hero {
+  background:
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 55%, var(--tpl-creme, #fdf8f3) 100%),
+    var(--tpl-creme, #fdf8f3);
+}
+.theme-thay-29 .hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -2; opacity: .35; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 72px, var(--tpl-rosaClaro, #f9e3e7) 72px 108px, transparent 108px 180px, rgba(147,152,107,.14) 180px 216px);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+}
+.theme-thay-29 .hero-overlay { background: transparent; }
+.theme-thay-29 .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.theme-thay-29 .eyebrow { color: #c98a96; }
+.theme-thay-29 .eyebrow::before { background: var(--tpl-rosa, #f2b8c0); }
+.theme-thay-29 .thay-logo { width: min(660px, 88vw); mix-blend-mode: multiply; }
+.theme-thay-29 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
+
+/* Borboletas — corpo oliva, asas rosa, voo atravessando o hero + bater de asas */
+.theme-thay-29 .borboleta {
+  position: absolute; top: 0; left: 0; width: 8px; height: 26px; z-index: 2; pointer-events: none;
+  background: linear-gradient(var(--tpl-oliva, #6b6d3f), #8a8c55); border-radius: 6px;
+}
+.theme-thay-29 .borboleta::before,
+.theme-thay-29 .borboleta::after {
+  content: ''; position: absolute; top: -2px; width: 22px; height: 30px;
+  background: radial-gradient(ellipse at 30% 35%, #fbd3da 0 45%, var(--tpl-rosa, #f2b8c0) 75%, #dfa0ab 100%);
+  border: 1px solid rgba(201,138,150,.55); opacity: .95;
+  animation: thayAsas .34s ease-in-out infinite alternate;
+}
+.theme-thay-29 .borboleta::before { right: 7px; border-radius: 78% 22% 62% 38% / 60% 40% 60% 40%; transform-origin: right center; }
+.theme-thay-29 .borboleta::after { left: 7px; border-radius: 22% 78% 38% 62% / 40% 60% 40% 60%; transform-origin: left center; animation-name: thayAsasDir; }
+@keyframes thayAsas { from { transform: rotateY(18deg); } to { transform: rotateY(66deg); } }
+@keyframes thayAsasDir { from { transform: rotateY(-18deg); } to { transform: rotateY(-66deg); } }
+.theme-thay-29 .borboleta-a { animation: thayVoo 22s ease-in-out infinite; }
+.theme-thay-29 .borboleta-b { scale: .62; animation: thayVooB 30s ease-in-out infinite; animation-delay: -12s; }
+@keyframes thayVoo {
+  0%   { transform: translate(-6vw, 62vh) rotate(14deg); }
+  22%  { transform: translate(20vw, 34vh) rotate(-10deg); }
+  45%  { transform: translate(46vw, 52vh) rotate(12deg); }
+  68%  { transform: translate(72vw, 22vh) rotate(-8deg); }
+  100% { transform: translate(106vw, 40vh) rotate(10deg); }
+}
+@keyframes thayVooB {
+  0%   { transform: translate(106vw, 24vh) rotate(-12deg); }
+  30%  { transform: translate(70vw, 56vh) rotate(10deg); }
+  60%  { transform: translate(38vw, 30vh) rotate(-12deg); }
+  100% { transform: translate(-8vw, 58vh) rotate(8deg); }
+}
+
+/* Botões */
+.theme-thay-29 .btn-thay {
+  background: linear-gradient(150deg, #7d7f4c 0%, var(--tpl-oliva, #6b6d3f) 100%);
+  color: #fdf8f3; box-shadow: 0 14px 34px rgba(107,109,63,.28);
+}
+.theme-thay-29 .btn-outline { color: var(--tpl-oliva, #6b6d3f); }
+
+/* Contador */
+.theme-thay-29 .countdown-grid { color: var(--tpl-oliva, #6b6d3f); }
+.theme-thay-29 .count-box { background: rgba(255,255,255,.85); border-color: rgba(242,184,192,.6); }
+.theme-thay-29 .count-number { color: #5f6136; }
+.theme-thay-29 .count-label { color: #a0a37a; }
+
+/* Seções */
+.theme-thay-29 .section.alt { background: rgba(249,227,231,.35); }
+.theme-thay-29 .detail-card { background: rgba(255,255,255,.75); border-color: rgba(147,152,107,.28); }
+.theme-thay-29 .dress-panel { background: linear-gradient(140deg, var(--tpl-rosaClaro, #f9e3e7) 0%, var(--tpl-rosa, #f2b8c0) 100%); color: #5c4046; }
+.theme-thay-29 .dress-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 88% 12%, rgba(255,255,255,.55), transparent 45%);
+}
+
+/* Formulário e sucesso */
+.theme-thay-29 .form-card { background: #ffffff; color: #4d4f30; }
+.theme-thay-29 .success-card { background: #ffffff; border: 1px solid rgba(242,184,192,.7); }
+.theme-thay-29 .success-icon { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Rodapé */
+.theme-thay-29 .event-footer { background: var(--tpl-creme, #fdf8f3); }
+.theme-thay-29 .event-footer .footer-inner { border-color: rgba(147,152,107,.4); }
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .theme-thay-29 .thay-logo { width: 94vw; }
+  .theme-thay-29 .borboleta-b { display: none; }
+  .theme-thay-29 .hero::before { opacity: .25; }
+}
