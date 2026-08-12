@@ -25,23 +25,27 @@
 .theme-thay-29-v2 .eyebrow::before { background: var(--tpl-rosa, #f2b8c0); }
 .theme-thay-29-v2 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
 
-/* Placa do brasão em destaque */
+/* Placa do brasão em destaque (transparência real) */
 .theme-thay-29-v2 .thay-placa {
-  width: min(400px, 76vw); mix-blend-mode: multiply;
+  width: min(250px, 58vw);
+  filter: drop-shadow(0 18px 34px rgba(107,109,63,.14));
   animation: thayPlacaIn 1.4s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes thayPlacaIn { from { opacity: 0; transform: scale(.95) translateY(14px); } to { opacity: 1; transform: none; } }
 
-/* Palmeiras laterais da arte como fundo (multiply funde o branco) */
+/* Palmeiras e folhas da arte flutuando ao fundo, em duas profundidades */
 .theme-thay-29-v2 .thay-palmeiras {
-  position: absolute; top: 4%; pointer-events: none; z-index: 0;
-  mix-blend-mode: multiply; opacity: .95;
-  animation: thayBalanco 12s ease-in-out infinite alternate;
-  transform-origin: bottom center;
+  position: absolute; pointer-events: none; z-index: 0;
+  animation: thayFlutua 11s ease-in-out infinite alternate;
 }
-.theme-thay-29-v2 .palmeiras-esq { left: -3%; width: min(34vw, 470px); }
-.theme-thay-29-v2 .palmeiras-dir { right: -3%; width: min(34vw, 470px); animation-delay: -6s; }
-@keyframes thayBalanco { from { transform: rotate(-.7deg); } to { transform: rotate(.7deg); } }
+.theme-thay-29-v2 .palmeiras-esq { left: -2%; top: 9%; width: min(26vw, 380px); }
+.theme-thay-29-v2 .palmeiras-dir { right: -2%; top: 12%; width: min(26vw, 380px); animation-delay: -5s; animation-duration: 14s; }
+.theme-thay-29-v2 .palmeiras-fundo-a { right: 20%; top: 3%; width: min(13vw, 175px); opacity: .42; filter: blur(1px); animation-delay: -8s; animation-duration: 17s; }
+.theme-thay-29-v2 .palmeiras-fundo-b { left: 17%; top: 55%; width: min(12vw, 160px); opacity: .38; filter: blur(1px); animation-delay: -3s; animation-duration: 15s; }
+@keyframes thayFlutua {
+  from { transform: translateY(0) rotate(-1deg); }
+  to   { transform: translateY(-18px) rotate(1.2deg); }
+}
 
 /* Borboletas realistas (SVG na paleta, bater de asas embutido) */
 .theme-thay-29-v2 .thay-borboleta {
@@ -97,9 +101,11 @@
 
 /* Responsivo */
 @media (max-width: 640px) {
-  .theme-thay-29-v2 .thay-placa { width: 88vw; }
-  .theme-thay-29-v2 .palmeiras-esq { width: 46vw; left: -14%; opacity: .8; }
-  .theme-thay-29-v2 .palmeiras-dir { width: 46vw; right: -14%; opacity: .8; }
+  .theme-thay-29-v2 .thay-placa { width: min(62vw, 250px); }
+  .theme-thay-29-v2 .palmeiras-esq { width: 38vw; left: -10%; top: 6%; opacity: .85; }
+  .theme-thay-29-v2 .palmeiras-dir { width: 38vw; right: -10%; top: 8%; opacity: .85; }
+  .theme-thay-29-v2 .palmeiras-fundo-a { display: none; }
+  .theme-thay-29-v2 .palmeiras-fundo-b { display: none; }
   .theme-thay-29-v2 .thay-borboleta { width: 46px; }
   .theme-thay-29-v2 .borboleta-b { display: none; }
 }
