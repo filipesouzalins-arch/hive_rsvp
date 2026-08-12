@@ -32,24 +32,13 @@
 .theme-thay-29 .thay-logo { width: min(660px, 88vw); mix-blend-mode: multiply; }
 .theme-thay-29 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
 
-/* Borboletas — corpo oliva, asas rosa, voo atravessando o hero + bater de asas */
-.theme-thay-29 .borboleta {
-  position: absolute; top: 0; left: 0; width: 8px; height: 26px; z-index: 2; pointer-events: none;
-  background: linear-gradient(var(--tpl-oliva, #6b6d3f), #8a8c55); border-radius: 6px;
+/* Borboletas realistas (SVG na paleta, com bater de asas embutido) voando pelo hero */
+.theme-thay-29 .thay-borboleta {
+  position: absolute; top: 0; left: 0; width: 64px; pointer-events: none; z-index: 2;
+  filter: drop-shadow(0 6px 10px rgba(107,109,63,.16));
 }
-.theme-thay-29 .borboleta::before,
-.theme-thay-29 .borboleta::after {
-  content: ''; position: absolute; top: -2px; width: 22px; height: 30px;
-  background: radial-gradient(ellipse at 30% 35%, #fbd3da 0 45%, var(--tpl-rosa, #f2b8c0) 75%, #dfa0ab 100%);
-  border: 1px solid rgba(201,138,150,.55); opacity: .95;
-  animation: thayAsas .34s ease-in-out infinite alternate;
-}
-.theme-thay-29 .borboleta::before { right: 7px; border-radius: 78% 22% 62% 38% / 60% 40% 60% 40%; transform-origin: right center; }
-.theme-thay-29 .borboleta::after { left: 7px; border-radius: 22% 78% 38% 62% / 40% 60% 40% 60%; transform-origin: left center; animation-name: thayAsasDir; }
-@keyframes thayAsas { from { transform: rotateY(18deg); } to { transform: rotateY(66deg); } }
-@keyframes thayAsasDir { from { transform: rotateY(-18deg); } to { transform: rotateY(-66deg); } }
 .theme-thay-29 .borboleta-a { animation: thayVoo 22s ease-in-out infinite; }
-.theme-thay-29 .borboleta-b { scale: .62; animation: thayVooB 30s ease-in-out infinite; animation-delay: -12s; }
+.theme-thay-29 .borboleta-b { width: 42px; animation: thayVooB 30s ease-in-out infinite; animation-delay: -12s; }
 @keyframes thayVoo {
   0%   { transform: translate(-6vw, 62vh) rotate(14deg); }
   22%  { transform: translate(20vw, 34vh) rotate(-10deg); }
@@ -98,6 +87,7 @@
 /* Responsivo */
 @media (max-width: 640px) {
   .theme-thay-29 .thay-logo { width: 94vw; }
+  .theme-thay-29 .thay-borboleta { width: 46px; }
   .theme-thay-29 .borboleta-b { display: none; }
   .theme-thay-29 .hero::before { opacity: .25; }
 }

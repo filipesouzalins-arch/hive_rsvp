@@ -1,0 +1,105 @@
+/* Tema: Thay 29 — Verão Europeu (opção 2). Mesmo estilo da opção 1, com a placa do
+   brasão em destaque no centro e as palmeiras/flores da arte como fundo do hero.
+   Gerado pela skill /novo-convite a partir de assets/thay-29/arte.jpeg.
+   Escopo: .theme-thay-29-v2 · Tokens via var(--tpl-*). */
+
+.theme-thay-29-v2 {
+  background: var(--tpl-creme, #fdf8f3);
+  color: var(--tpl-oliva, #6b6d3f);
+}
+
+/* Navegação clara */
+.theme-thay-29-v2 .event-nav { background: rgba(253,248,243,.82); color: var(--tpl-oliva, #6b6d3f); border-color: rgba(107,109,63,.18); }
+.theme-thay-29-v2 .event-nav-links a { color: rgba(107,109,63,.75); }
+.theme-thay-29-v2 .event-nav-links a:hover { color: var(--tpl-oliva, #6b6d3f); background: rgba(107,109,63,.09); }
+.theme-thay-29-v2 .event-nav-links a.rsvp-nav,
+.theme-thay-29-v2 .event-nav-links a.rsvp-nav:hover { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Hero: branco (a arte funde) com as palmeiras da própria aquarela nas laterais */
+.theme-thay-29-v2 .hero {
+  background: linear-gradient(to bottom, #ffffff 0%, #ffffff 62%, var(--tpl-creme, #fdf8f3) 100%);
+}
+.theme-thay-29-v2 .hero-overlay { background: transparent; }
+.theme-thay-29-v2 .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.theme-thay-29-v2 .eyebrow { color: #c98a96; }
+.theme-thay-29-v2 .eyebrow::before { background: var(--tpl-rosa, #f2b8c0); }
+.theme-thay-29-v2 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
+
+/* Placa do brasão em destaque */
+.theme-thay-29-v2 .thay-placa {
+  width: min(400px, 76vw); mix-blend-mode: multiply;
+  animation: thayPlacaIn 1.4s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes thayPlacaIn { from { opacity: 0; transform: scale(.95) translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Palmeiras laterais da arte como fundo (multiply funde o branco) */
+.theme-thay-29-v2 .thay-palmeiras {
+  position: absolute; top: 4%; pointer-events: none; z-index: 0;
+  mix-blend-mode: multiply; opacity: .95;
+  animation: thayBalanco 12s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+.theme-thay-29-v2 .palmeiras-esq { left: -3%; width: min(34vw, 470px); }
+.theme-thay-29-v2 .palmeiras-dir { right: -3%; width: min(34vw, 470px); animation-delay: -6s; }
+@keyframes thayBalanco { from { transform: rotate(-.7deg); } to { transform: rotate(.7deg); } }
+
+/* Borboletas realistas (SVG na paleta, bater de asas embutido) */
+.theme-thay-29-v2 .thay-borboleta {
+  position: absolute; top: 0; left: 0; width: 64px; pointer-events: none; z-index: 2;
+  filter: drop-shadow(0 6px 10px rgba(107,109,63,.16));
+}
+.theme-thay-29-v2 .borboleta-a { animation: thayVoo2 22s ease-in-out infinite; }
+.theme-thay-29-v2 .borboleta-b { width: 42px; animation: thayVoo2B 30s ease-in-out infinite; animation-delay: -12s; }
+@keyframes thayVoo2 {
+  0%   { transform: translate(-6vw, 62vh) rotate(14deg); }
+  22%  { transform: translate(20vw, 34vh) rotate(-10deg); }
+  45%  { transform: translate(46vw, 52vh) rotate(12deg); }
+  68%  { transform: translate(72vw, 22vh) rotate(-8deg); }
+  100% { transform: translate(106vw, 40vh) rotate(10deg); }
+}
+@keyframes thayVoo2B {
+  0%   { transform: translate(106vw, 24vh) rotate(-12deg); }
+  30%  { transform: translate(70vw, 56vh) rotate(10deg); }
+  60%  { transform: translate(38vw, 30vh) rotate(-12deg); }
+  100% { transform: translate(-8vw, 58vh) rotate(8deg); }
+}
+
+/* Botões */
+.theme-thay-29-v2 .btn-thay {
+  background: linear-gradient(150deg, #7d7f4c 0%, var(--tpl-oliva, #6b6d3f) 100%);
+  color: #fdf8f3; box-shadow: 0 14px 34px rgba(107,109,63,.28);
+}
+.theme-thay-29-v2 .btn-outline { color: var(--tpl-oliva, #6b6d3f); }
+
+/* Contador */
+.theme-thay-29-v2 .countdown-grid { color: var(--tpl-oliva, #6b6d3f); }
+.theme-thay-29-v2 .count-box { background: rgba(255,255,255,.85); border-color: rgba(242,184,192,.6); }
+.theme-thay-29-v2 .count-number { color: #5f6136; }
+.theme-thay-29-v2 .count-label { color: #a0a37a; }
+
+/* Seções */
+.theme-thay-29-v2 .section.alt { background: rgba(249,227,231,.35); }
+.theme-thay-29-v2 .detail-card { background: rgba(255,255,255,.75); border-color: rgba(147,152,107,.28); }
+.theme-thay-29-v2 .dress-panel { background: linear-gradient(140deg, var(--tpl-rosaClaro, #f9e3e7) 0%, var(--tpl-rosa, #f2b8c0) 100%); color: #5c4046; }
+.theme-thay-29-v2 .dress-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 88% 12%, rgba(255,255,255,.55), transparent 45%);
+}
+
+/* Formulário e sucesso */
+.theme-thay-29-v2 .form-card { background: #ffffff; color: #4d4f30; }
+.theme-thay-29-v2 .success-card { background: #ffffff; border: 1px solid rgba(242,184,192,.7); }
+.theme-thay-29-v2 .success-icon { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Rodapé */
+.theme-thay-29-v2 .event-footer { background: var(--tpl-creme, #fdf8f3); }
+.theme-thay-29-v2 .event-footer .footer-inner { border-color: rgba(147,152,107,.4); }
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .theme-thay-29-v2 .thay-placa { width: 88vw; }
+  .theme-thay-29-v2 .palmeiras-esq { width: 46vw; left: -14%; opacity: .8; }
+  .theme-thay-29-v2 .palmeiras-dir { width: 46vw; right: -14%; opacity: .8; }
+  .theme-thay-29-v2 .thay-borboleta { width: 46px; }
+  .theme-thay-29-v2 .borboleta-b { display: none; }
+}
