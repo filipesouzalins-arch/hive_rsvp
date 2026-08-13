@@ -38,10 +38,11 @@
   position: absolute; pointer-events: none; z-index: 0;
   animation: thayFlutua 11s ease-in-out infinite alternate;
 }
-.theme-thay-29-v2 .palmeiras-esq { left: -2%; top: 9%; width: min(26vw, 380px); }
-.theme-thay-29-v2 .palmeiras-dir { right: -2%; top: 12%; width: min(26vw, 380px); animation-delay: -5s; animation-duration: 14s; }
-.theme-thay-29-v2 .palmeiras-fundo-a { right: 20%; top: 3%; width: min(13vw, 175px); opacity: .42; filter: blur(1px); animation-delay: -8s; animation-duration: 17s; }
-.theme-thay-29-v2 .palmeiras-fundo-b { left: 17%; top: 55%; width: min(12vw, 160px); opacity: .38; filter: blur(1px); animation-delay: -3s; animation-duration: 15s; }
+/* Par principal encaixado atrás do brasão (âncora no centro da tela) */
+.theme-thay-29-v2 .palmeiras-esq { right: calc(50% + 15px); left: auto; top: 11%; width: min(32vw, 440px); }
+.theme-thay-29-v2 .palmeiras-dir { left: calc(50% + 15px); right: auto; top: 13%; width: min(32vw, 440px); animation-delay: -5s; animation-duration: 14s; }
+.theme-thay-29-v2 .palmeiras-fundo-a { right: 5%; top: 2%; width: min(13vw, 175px); opacity: .42; filter: blur(1px); animation-delay: -8s; animation-duration: 17s; }
+.theme-thay-29-v2 .palmeiras-fundo-b { left: 4%; top: 52%; width: min(12vw, 160px); opacity: .38; filter: blur(1px); animation-delay: -3s; animation-duration: 15s; }
 @keyframes thayFlutua {
   from { transform: translateY(0) rotate(-1deg); }
   to   { transform: translateY(-18px) rotate(1.2deg); }
@@ -102,8 +103,8 @@
 /* Responsivo */
 @media (max-width: 640px) {
   .theme-thay-29-v2 .thay-placa { width: min(62vw, 250px); }
-  .theme-thay-29-v2 .palmeiras-esq { width: 38vw; left: -10%; top: 6%; opacity: .85; }
-  .theme-thay-29-v2 .palmeiras-dir { width: 38vw; right: -10%; top: 8%; opacity: .85; }
+  .theme-thay-29-v2 .palmeiras-esq { width: 46vw; right: calc(50% - 20px); top: 7%; }
+  .theme-thay-29-v2 .palmeiras-dir { width: 46vw; left: calc(50% - 20px); top: 9%; }
   .theme-thay-29-v2 .palmeiras-fundo-a { display: none; }
   .theme-thay-29-v2 .palmeiras-fundo-b { display: none; }
   .theme-thay-29-v2 .thay-borboleta { width: 46px; }
