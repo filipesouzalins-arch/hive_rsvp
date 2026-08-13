@@ -365,6 +365,7 @@ function paintEvent(event) {
           <div><div class="footer-name">${esc(event.nome)}</div><div>${esc(dateLabel)} · ${esc(formatTime(event.dataHora))}</div></div>
           <div class="footer-copy">${esc(copy.footer || 'Esperamos você para celebrar conosco.')}</div>
         </div>
+        ${socialRowMarkup(event)}
       </footer>
     </main>`;
 
@@ -372,6 +373,16 @@ function paintEvent(event) {
   initReveal();
   initParallax();
   initRsvpForm(event);
+}
+
+function socialRowMarkup(event) {
+  const links = event.content.instagram || [];
+  if (!links.length) return '';
+  const icone = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>';
+  return `<div class="shell social-row">${links.map(url => {
+    const handle = String(url).replace(/\/+$/, '').split('/').pop();
+    return `<a class="social-glass" href="${esc(url)}" target="_blank" rel="noopener">${icone}<span>@${esc(handle)}</span></a>`;
+  }).join('')}</div>`;
 }
 
 function countdownMarkup(iso) {
@@ -714,6 +725,7 @@ function adminEditorMarkup(event) {
         <div class="field full"><label>Título ao compartilhar o link</label><input name="metaTitle" value="${esc(event.meta?.title || '')}" placeholder="Ex.: F70 — Celebração de 70 anos" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">Aparece na prévia do WhatsApp e redes sociais.</small></div>
         <div class="field full"><label>Descrição ao compartilhar o link</label><textarea name="metaDescription" placeholder="Texto curto exibido abaixo do título na prévia.">${esc(event.meta?.description || '')}</textarea></div>
         <div class="field full"><label>Texto do rodapé</label><textarea name="copyFooter" placeholder="Mensagem exibida no rodapé do convite.">${esc(event.copy?.footer || '')}</textarea></div>
+        <div class="field full"><label>Instagram no rodapé (um link por linha)</label><textarea name="instagramLinks" placeholder="https://www.instagram.com/seu_perfil">${esc((event.content.instagram || []).join('\n'))}</textarea></div>
         <div class="field full"><label>Título da sugestão de presente</label><input name="giftTitle" value="${esc(event.gift?.title || '')}" placeholder="Ex.: Sugestão de presente — Escolha sua instituição" /></div>
         <div class="field full"><label>Texto da sugestão de presente</label><textarea name="giftText" placeholder="Mensagem exibida acima da escolha da instituição.">${esc(event.gift?.text || '')}</textarea></div>
         <div class="field full"><label>Instituições (uma por linha: Nome | CNPJ | Chave PIX)</label><textarea name="giftInstitutions" placeholder="CADEFI — Centro de Apoio ao Deficiente Físico | 18.908.809/0001-81 | 18908809000181">${esc((event.gift?.institutions || []).map(i => `${i.nome} | ${i.cnpj || ''} | ${i.pix || ''}`).join('\n'))}</textarea></div>
@@ -779,6 +791,7 @@ function initAdminEditor(event) {
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
       copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim() },
+      instagram: String(fd.get('instagramLinks') || '').split('\n').map(linha => linha.trim()).filter(Boolean),
       meta: { ...(event.content.meta || {}), title: String(fd.get('metaTitle') || '').trim(), description: String(fd.get('metaDescription') || '').trim() },
       gift: {
         ...(event.content.gift || {}),

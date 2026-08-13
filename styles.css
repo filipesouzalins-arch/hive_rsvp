@@ -183,6 +183,15 @@ img { max-width: 100%; display: block; }
 .success-card p { line-height: 1.6; opacity: .72; }
 
 .event-footer { padding: 60px 0 34px; }
+.social-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+.social-glass {
+  display: inline-flex; align-items: center; gap: 9px; padding: 11px 19px; border-radius: 999px;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(128,128,128,.28);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  color: inherit; font-size: .8rem; font-weight: 700; letter-spacing: .02em;
+  box-shadow: 0 8px 24px rgba(0,0,0,.08); transition: background .2s ease, transform .2s ease;
+}
+.social-glass:hover { background: rgba(255,255,255,.3); transform: translateY(-2px); }
 .footer-inner { display: flex; justify-content: space-between; gap: 30px; align-items: end; border-top: 1px solid currentColor; padding-top: 26px; opacity: .74; }
 .footer-name { font-family: var(--serif); font-size: 2rem; }
 .footer-copy { max-width: 410px; text-align: right; font-size: .85rem; line-height: 1.6; }
