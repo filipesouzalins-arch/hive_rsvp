@@ -325,6 +325,7 @@ function paintEvent(event) {
             <span class="eyebrow">Dress code</span>
             <h3>${esc(copy.headingDress || 'Entre no clima.')}</h3>
             <p>${esc(event.dressCode)}</p>
+            ${(event.content.pantone || []).length ? `<div class="pantone-row">${event.content.pantone.map(cor => `<div class="pantone-item"><span class="pantone-dot" style="background:${esc(cor.hex)}"></span><small>${esc(cor.nome)}</small></div>`).join('')}</div>` : ''}
           </div>
         </div>
       </section>` : ''}
