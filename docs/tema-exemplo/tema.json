@@ -1,0 +1,24 @@
+{
+  "slug": "tropical-sunset-exemplo",
+  "name": "Tropical Sunset (exemplo)",
+  "description": "Pacote de exemplo para testar o upload na Biblioteca de temas",
+  "tokens": {
+    "colors": { "creme": "#fdf8f3", "rosa": "#f2b8c0", "rosaClaro": "#f9e3e7", "oliva": "#6b6d3f", "olivaClaro": "#93986b", "nude": "#e9d8c8" },
+    "fonts": { "serif": "Georgia, 'Times New Roman', serif", "sans": "Inter, system-ui, sans-serif" },
+    "radius": "30px"
+  },
+  "layout": {
+    "themeClass": "theme-tropical-sunset-exemplo",
+    "mode": "light",
+    "cssFile": "tema.css",
+    "heroImage": null,
+    "logo": { "type": "image", "image": "arte.webp", "className": "thay-logo", "taglineClass": "lead hero-tagline-center" },
+    "ornaments": [
+      { "kind": "image", "value": "borboleta.svg", "className": "thay-borboleta borboleta-a" },
+      { "kind": "image", "value": "borboleta.svg", "className": "thay-borboleta borboleta-b" }
+    ],
+    "primaryButton": "btn-thay",
+    "submitButton": "btn-thay",
+    "preview": "preview.png"
+  }
+}

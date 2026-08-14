@@ -106,6 +106,26 @@ const dataService = {
     const { error } = await supabase.from('rsvps').delete().eq('id', rsvpId);
     if (error) throw error;
   },
+  async listTemplates() {
+    const { data, error } = await supabase.from('templates').select('id, slug, name, description, tokens, layout').order('name');
+    if (error) throw error;
+    return data || [];
+  },
+  async createTemplate(row) {
+    const { data, error } = await supabase.from('templates').insert(row).select('id').single();
+    if (error) throw error;
+    return data;
+  },
+  async deleteTemplate(templateId) {
+    const { error } = await supabase.from('templates').delete().eq('id', templateId);
+    if (error) throw error;
+  },
+  async uploadThemeFile(temaSlug, file) {
+    const caminho = `temas/${temaSlug}/${file.name}`;
+    const { error } = await supabase.storage.from('event-assets').upload(caminho, file, { upsert: true });
+    if (error) throw error;
+    return supabase.storage.from('event-assets').getPublicUrl(caminho).data.publicUrl;
+  },
   subscribe(slug, callback) {
     const channel = supabase
       .channel(`event-${slug}`)
@@ -629,7 +649,7 @@ function phoneMask(value) {
 function digits(value) { return String(value || '').replace(/\D/g, ''); }
 
 async function renderAdmin() {
-  document.title = 'Painel RSVP — França 70';
+  document.title = 'Painel — hive RSVP';
   const { data: { session } } = await supabase.auth.getSession();
   if (!session) return renderLogin();
   paintAdmin();
@@ -664,7 +684,7 @@ function renderLogin(error = '') {
 }
 
 async function paintAdmin(activeSlug) {
-  let events, event, rsvps;
+  let events, event, rsvps, templates;
   try {
     events = await dataService.listEvents();
     if (!events.length) {
@@ -672,7 +692,10 @@ async function paintAdmin(activeSlug) {
       return;
     }
     event = events.find(item => item.slug === activeSlug) || events[0];
-    rsvps = await dataService.getRsvps(event.id);
+    [rsvps, templates] = await Promise.all([
+      dataService.getRsvps(event.id),
+      dataService.listTemplates()
+    ]);
   } catch (err) {
     console.error(err);
     toast('Não foi possível carregar os dados do painel.', true);
@@ -685,14 +708,17 @@ async function paintAdmin(activeSlug) {
 
   app.innerHTML = `<main class="admin-page">
     <header class="admin-header"><div class="admin-header-inner">
-      <div><div class="admin-brand">França 70 · Painel RSVP</div><div style="color:#858995;font-size:.74rem">Dados sincronizados com o Supabase</div></div>
+      <div><div class="admin-brand">Painel hive RSVP</div></div>
       <div style="display:flex;gap:8px"><a class="btn btn-outline" href="../${esc(event.slug)}/" target="_blank">Ver convite ↗</a><button id="logout" class="btn btn-outline">Sair</button></div>
     </div></header>
     <div class="admin-shell">
       <div class="admin-tabs">${tabs}</div>
       <div class="admin-grid">
-        ${adminEditorMarkup(event)}
-        ${adminRsvpMarkup(event, rsvps)}
+        ${adminEditorMarkup(event, templates)}
+        <div class="admin-col">
+          ${adminRsvpMarkup(event, rsvps)}
+          ${adminTemasMarkup(templates, events)}
+        </div>
       </div>
     </div>
   </main>`;
@@ -704,9 +730,19 @@ async function paintAdmin(activeSlug) {
   });
   initAdminEditor(event);
   initAdminRsvps(event, rsvps);
+  initAdminTemas(event);
 }
 
-function adminEditorMarkup(event) {
+function temaThumbMarkup(template) {
+  const layout = template.layout || {};
+  const imagem = layout.preview || layout.logo?.image || layout.heroImage;
+  if (imagem) return `<img src="${esc(imagem)}" alt="" loading="lazy" />`;
+  const cores = Object.values((template.tokens || {}).colors || {}).slice(0, 4);
+  const fatias = (cores.length ? cores : ['#e5e0d6']).map(cor => `<i style="background:${esc(cor)}"></i>`).join('');
+  return `<span class="tema-swatch">${fatias}</span>`;
+}
+
+function adminEditorMarkup(event, templates) {
   return `<section class="admin-card">
     <h2>Informações do evento</h2>
     <div class="admin-card-sub">Edite o conteúdo exibido no convite público.</div>
@@ -715,6 +751,11 @@ function adminEditorMarkup(event) {
         ${adminField('nome','Nome do evento',event.nome)}
         ${adminField('dataHora','Data e hora',toLocalInput(event.dataHora),'datetime-local')}
         <div class="field full"><label>Link do formulário</label><input name="slug" value="${esc(event.slug)}" autocapitalize="off" spellcheck="false" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">O convite fica em <b>/&lt;link&gt;</b> (letras minúsculas, números e hífens). Mudar o link invalida o endereço anterior já enviado aos convidados.</small></div>
+        <div class="field full"><label>Tema do convite</label>
+          <div class="tema-grid">
+            ${(templates || []).map(t => `<button type="button" class="tema-card ${t.id === event.templateId ? 'ativo' : ''}" data-template-id="${esc(t.id)}" title="${esc(t.description || t.name)}">${temaThumbMarkup(t)}<span>${esc(t.name)}</span></button>`).join('')}
+          </div>
+        </div>
         <div class="field full"><label>Tagline</label><input name="tagline" value="${esc(event.tagline)}" /></div>
         <div class="field full"><label>Título da apresentação</label><input name="headingDescricao" value="${esc(event.copy?.headingDescricao || '')}" placeholder="Ex.: Um domingo com o melhor do Brasil." /></div>
         <div class="field full"><label>Descrição</label><textarea name="descricao">${esc(event.descricao)}</textarea></div>
@@ -785,6 +826,10 @@ function rsvpItemsMarkup(event, items) {
 
 function initAdminEditor(event) {
   const form = document.getElementById('event-editor');
+  form.querySelectorAll('.tema-card').forEach(card => card.addEventListener('click', () => {
+    form.querySelectorAll('.tema-card').forEach(outro => outro.classList.remove('ativo'));
+    card.classList.add('ativo');
+  }));
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const fd = new FormData(form);
@@ -829,6 +874,7 @@ function initAdminEditor(event) {
       await dataService.updateEvent(event.id, {
         name: fd.get('nome'),
         slug,
+        template_id: form.querySelector('.tema-card.ativo')?.dataset.templateId || event.templateId,
         status: form.elements.eventoPublicado.checked ? 'published' : 'draft',
         starts_at: new Date(fd.get('dataHora')).toISOString(),
         max_companions: Math.max(0, Math.min(20, Number(fd.get('maxAcompanhantes') || 0))),
@@ -886,6 +932,81 @@ function initAdminEditor(event) {
     if (error) return toast('Não foi possível alterar a senha.', true);
     toast('Senha alterada com sucesso.');
   });
+}
+
+function adminTemasMarkup(templates, events) {
+  const uso = templateId => events.filter(ev => ev.templateId === templateId).length;
+  return `<section class="admin-card">
+    <h2>Biblioteca de temas</h2>
+    <div class="admin-card-sub">Temas disponíveis para os convites. Envie pacotes gerados pela skill /novo-convite.</div>
+    <div class="tema-lista">
+      ${(templates || []).map(t => {
+        const emUso = uso(t.id);
+        return `<div class="tema-item">${temaThumbMarkup(t)}<div style="flex:1;min-width:0"><strong>${esc(t.name)}</strong><div class="rsvp-meta">${esc(t.slug)} · ${emUso ? `${emUso} evento(s)` : 'sem uso'}</div></div>${emUso === 0 ? `<button class="rsvp-delete" data-delete-tema="${esc(t.id)}" aria-label="Excluir tema">×</button>` : ''}</div>`;
+      }).join('')}
+    </div>
+    <div class="admin-tools" style="margin-top:16px">
+      <input type="file" id="tema-pacote" multiple accept=".json,.css,image/*" style="display:none" />
+      <button id="enviar-tema" class="btn btn-primary" style="width:100%">Enviar novo tema (pacote)</button>
+    </div>
+    <small style="opacity:.6;font-size:.72rem;line-height:1.5;display:block;margin-top:10px">Pacote: um <b>tema.json</b> + um <b>.css</b> + imagens (inclua <b>preview.png</b> para a miniatura). Selecione todos os arquivos de uma vez.</small>
+  </section>`;
+}
+
+function initAdminTemas(event) {
+  const recarregar = () => paintAdmin(document.querySelector('.admin-tab.active')?.dataset.tab || event.slug);
+  const input = document.getElementById('tema-pacote');
+  document.getElementById('enviar-tema').addEventListener('click', () => input.click());
+  input.addEventListener('change', async () => {
+    const arquivos = [...input.files];
+    input.value = '';
+    if (!arquivos.length) return;
+    const json = arquivos.find(f => f.name.toLowerCase().endsWith('.json'));
+    const css = arquivos.find(f => f.name.toLowerCase().endsWith('.css'));
+    if (!json) return toast('O pacote precisa de um tema.json.', true);
+    if (!css) return toast('O pacote precisa de um arquivo .css.', true);
+    let tema;
+    try { tema = JSON.parse(await json.text()); } catch { return toast('tema.json inválido (JSON malformado).', true); }
+    const slug = String(tema.slug || '').trim().toLowerCase();
+    if (!/^[a-z0-9][a-z0-9-]{1,58}$/.test(slug)) return toast('tema.json: slug inválido.', true);
+    if (!tema.name || !tema.layout) return toast('tema.json precisa dos campos name e layout.', true);
+    toast('Enviando tema...');
+    try {
+      const urls = {};
+      for (const arquivo of arquivos.filter(f => f !== json)) {
+        urls[arquivo.name] = await dataService.uploadThemeFile(slug, arquivo);
+      }
+      // Reescreve referências por nome de arquivo (ex.: "arte.webp") para a URL pública
+      const reescreve = obj => {
+        Object.keys(obj).forEach(chave => {
+          const valor = obj[chave];
+          if (valor && typeof valor === 'object') reescreve(valor);
+          else if (typeof valor === 'string' && urls[valor]) obj[chave] = urls[valor];
+        });
+      };
+      const layout = tema.layout;
+      reescreve(layout);
+      layout.cssFile = urls[css.name];
+      if (!layout.preview && urls['preview.png']) layout.preview = urls['preview.png'];
+      await dataService.createTemplate({ slug, name: tema.name, description: tema.description || null, tokens: tema.tokens || {}, layout });
+      toast('Tema enviado com sucesso.');
+      recarregar();
+    } catch (err) {
+      console.error(err);
+      toast(err?.code === '23505' ? 'Já existe um tema com esse slug.' : 'Não foi possível enviar o tema.', true);
+    }
+  });
+  document.querySelectorAll('[data-delete-tema]').forEach(btn => btn.addEventListener('click', async () => {
+    if (!confirm('Excluir este tema da biblioteca? (Nenhum evento o utiliza.)')) return;
+    try {
+      await dataService.deleteTemplate(btn.dataset.deleteTema);
+      toast('Tema excluído.');
+      recarregar();
+    } catch (err) {
+      console.error(err);
+      toast('Não foi possível excluir o tema.', true);
+    }
+  }));
 }
 
 function initAdminRsvps(event, rsvps) {

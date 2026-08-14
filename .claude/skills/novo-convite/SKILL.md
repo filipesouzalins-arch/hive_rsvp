@@ -71,6 +71,20 @@ Siga o formato de [CONTRACT.md](CONTRACT.md) — é o mesmo shape das colunas `t
 Use como referência os temas existentes em [styles.css](../../../styles.css)
 (`.theme-sabado` linha ~173, `.theme-domingo` linha ~195).
 
+## 4b. Modo pacote (alternativa: o usuário faz upload pelo painel)
+
+Se o usuário pedir um **pacote de tema** (ou não quiser registro direto), entregue uma pasta com:
+
+- **`tema.json`** — `{slug, name, description, tokens, layout}` no formato do CONTRACT.md, com duas
+  convenções: referências de imagem no `layout` usam **só o nome do arquivo** (ex.: `"image": "arte.webp"`,
+  `"cssFile": "tema.css"`, `"preview": "preview.png"`) — o painel as troca pelas URLs públicas no upload;
+- **`tema.css`** — o tema escopado (imagens dentro do CSS por URL **relativa**, ex.: `url('arte.webp')`);
+- **imagens** — assets do tema + **`preview.png`** (~420px, miniatura do seletor de temas).
+
+O usuário envia tudo de uma vez em **Painel → Biblioteca de temas → Enviar novo tema**; os arquivos vão
+para o Storage (`event-assets/temas/<slug>/`) e o tema aparece no seletor visual do editor de eventos.
+Exemplo pronto em [docs/tema-exemplo/](../../../docs/tema-exemplo/). Neste modo, pule os passos 5–6.
+
 ## 5. Registre no Supabase (projeto `gklsynhauoffnncmhiwc`)
 
 Via MCP `execute_sql` (dados) — evento nasce **rascunho**:
