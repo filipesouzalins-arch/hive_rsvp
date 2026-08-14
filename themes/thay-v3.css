@@ -28,9 +28,13 @@
 .theme-thay-v3 .hero-overlay { background: transparent; }
 .theme-thay-v3 .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
 
-/* Eyebrow: sem traço, centralizado com o brasão e com respiro antes da imagem */
-.theme-thay-v3 .eyebrow { color: #c98a96; display: block; text-align: center; margin-bottom: 22px; }
-.theme-thay-v3 .eyebrow::before { display: none; }
+/* Eyebrows de seção mantêm o traço padrão; só a cor é do tema */
+.theme-thay-v3 .eyebrow { color: #c98a96; }
+.theme-thay-v3 .eyebrow::before { background: var(--tpl-rosa, #f2b8c0); }
+
+/* Eyebrow do hero: sem traço, centralizado com o brasão e com respiro antes da imagem */
+.theme-thay-v3 .hero .eyebrow { display: block; text-align: center; margin-bottom: 22px; }
+.theme-thay-v3 .hero .eyebrow::before { display: none; }
 
 .theme-thay-v3 .thay-logo { width: min(640px, 88vw); }
 .theme-thay-v3 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
