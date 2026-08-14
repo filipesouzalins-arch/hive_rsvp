@@ -1,0 +1,104 @@
+/* Tema: Thay v3 — Tropical Sunset. Evolução do tema thay-29 (staging do convite vivo):
+   brasão Tropical Sunset, eyebrow centralizado sem traço e Instagram sutil no rodapé.
+   Escopo: .theme-thay-v3 · Tokens via var(--tpl-*). */
+
+.theme-thay-v3 {
+  background: var(--tpl-creme, #fdf8f3);
+  color: var(--tpl-oliva, #6b6d3f);
+}
+
+/* Navegação clara */
+.theme-thay-v3 .event-nav { background: rgba(253,248,243,.82); color: var(--tpl-oliva, #6b6d3f); border-color: rgba(107,109,63,.18); }
+.theme-thay-v3 .event-nav-links a { color: rgba(107,109,63,.75); }
+.theme-thay-v3 .event-nav-links a:hover { color: var(--tpl-oliva, #6b6d3f); background: rgba(107,109,63,.09); }
+.theme-thay-v3 .event-nav-links a.rsvp-nav,
+.theme-thay-v3 .event-nav-links a.rsvp-nav:hover { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Hero: branco-creme com listras pastéis */
+.theme-thay-v3 .hero {
+  background:
+    linear-gradient(to bottom, #ffffff 0%, #ffffff 55%, var(--tpl-creme, #fdf8f3) 100%),
+    var(--tpl-creme, #fdf8f3);
+}
+.theme-thay-v3 .hero::before {
+  content: ''; position: absolute; inset: 0; z-index: -2; opacity: .35; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 72px, var(--tpl-rosaClaro, #f9e3e7) 72px 108px, transparent 108px 180px, rgba(147,152,107,.14) 180px 216px);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
+}
+.theme-thay-v3 .hero-overlay { background: transparent; }
+.theme-thay-v3 .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+/* Eyebrow: sem traço, centralizado com o brasão e com respiro antes da imagem */
+.theme-thay-v3 .eyebrow { color: #c98a96; display: block; text-align: center; margin-bottom: 22px; }
+.theme-thay-v3 .eyebrow::before { display: none; }
+
+.theme-thay-v3 .thay-logo { width: min(640px, 88vw); }
+.theme-thay-v3 .hero-date { color: var(--tpl-oliva, #6b6d3f); letter-spacing: .12em; text-transform: uppercase; font-size: .82rem; }
+
+/* Borboletas realistas (SVG na paleta, com bater de asas embutido) voando pelo hero */
+.theme-thay-v3 .thay-borboleta {
+  position: absolute; top: 0; left: 0; width: 64px; pointer-events: none; z-index: 3;
+  filter: drop-shadow(0 6px 10px rgba(107,109,63,.16));
+}
+.theme-thay-v3 .borboleta-a { animation: thayVoo3 22s ease-in-out infinite; }
+.theme-thay-v3 .borboleta-b { width: 42px; animation: thayVoo3B 30s ease-in-out infinite; animation-delay: -12s; }
+@keyframes thayVoo3 {
+  0%   { transform: translate(-6vw, 62vh) rotate(14deg); }
+  22%  { transform: translate(20vw, 34vh) rotate(-10deg); }
+  45%  { transform: translate(46vw, 52vh) rotate(12deg); }
+  68%  { transform: translate(72vw, 22vh) rotate(-8deg); }
+  100% { transform: translate(106vw, 40vh) rotate(10deg); }
+}
+@keyframes thayVoo3B {
+  0%   { transform: translate(106vw, 24vh) rotate(-12deg); }
+  30%  { transform: translate(70vw, 56vh) rotate(10deg); }
+  60%  { transform: translate(38vw, 30vh) rotate(-12deg); }
+  100% { transform: translate(-8vw, 58vh) rotate(8deg); }
+}
+
+/* Botões */
+.theme-thay-v3 .btn-thay {
+  background: linear-gradient(150deg, #7d7f4c 0%, var(--tpl-oliva, #6b6d3f) 100%);
+  color: #fdf8f3; box-shadow: 0 14px 34px rgba(107,109,63,.28);
+}
+.theme-thay-v3 .btn-outline { color: var(--tpl-oliva, #6b6d3f); }
+
+/* Contador */
+.theme-thay-v3 .countdown-grid { color: var(--tpl-oliva, #6b6d3f); }
+.theme-thay-v3 .count-box { background: rgba(255,255,255,.85); border-color: rgba(242,184,192,.6); }
+.theme-thay-v3 .count-number { color: #5f6136; }
+.theme-thay-v3 .count-label { color: #a0a37a; }
+
+/* Seções */
+.theme-thay-v3 .section.alt { background: rgba(249,227,231,.35); }
+.theme-thay-v3 .detail-card { background: rgba(255,255,255,.75); border-color: rgba(147,152,107,.28); }
+.theme-thay-v3 .dress-panel { background: linear-gradient(140deg, var(--tpl-rosaClaro, #f9e3e7) 0%, var(--tpl-rosa, #f2b8c0) 100%); color: #5c4046; }
+.theme-thay-v3 .dress-panel::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 88% 12%, rgba(255,255,255,.55), transparent 45%);
+}
+
+/* Formulário e sucesso */
+.theme-thay-v3 .form-card { background: #ffffff; color: #4d4f30; }
+.theme-thay-v3 .success-card { background: #ffffff; border: 1px solid rgba(242,184,192,.7); }
+.theme-thay-v3 .success-icon { background: var(--tpl-rosa, #f2b8c0); color: #5c3a41; }
+
+/* Rodapé */
+.theme-thay-v3 .event-footer { background: var(--tpl-creme, #fdf8f3); }
+.theme-thay-v3 .event-footer .footer-inner { border-color: rgba(147,152,107,.4); }
+
+/* Instagram sutil: sem botão/vidro — só ícone + nome, discreto */
+.theme-thay-v3 .social-glass {
+  background: transparent !important; border: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+  padding: 4px 6px; gap: 7px; font-size: .78rem; font-weight: 600; opacity: .75;
+  transition: opacity .2s ease;
+}
+.theme-thay-v3 .social-glass:hover { background: transparent !important; transform: none; opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Responsivo */
+@media (max-width: 640px) {
+  .theme-thay-v3 .thay-logo { width: 94vw; }
+  .theme-thay-v3 .thay-borboleta { width: 46px; }
+  .theme-thay-v3 .borboleta-b { display: none; }
+  .theme-thay-v3 .hero::before { opacity: .25; }
+}
