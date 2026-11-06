@@ -267,7 +267,12 @@ function logoMarkup(logo, event) {
     ? `<p class="${esc(logo?.taglineClass || 'f70-tagline')}">${esc(event.tagline)}</p>`
     : '';
   if (logo?.type === 'image' && logo.image) {
-    return `<img class="${esc(logo.className || 'feijuca-logo')}" src="${esc(logo.image)}" alt="${esc(event.nome)}" />${tagline}`;
+    // heading opcional: título em HTML logo abaixo da imagem (fontes carregam
+    // normalmente, ao contrário de texto dentro de SVG externo).
+    const heading = logo.heading
+      ? `<h1 class="${esc(logo.headingClass || 'logo-heading')}">${esc(logo.heading)}</h1>`
+      : '';
+    return `<img class="${esc(logo.className || 'feijuca-logo')}" src="${esc(logo.image)}" alt="${esc(event.nome)}" />${heading}${tagline}`;
   }
   const text = logo?.text || event.nome;
   const marked = esc(text).replace(/(\d+)\s*$/, '<span>$1</span>');
