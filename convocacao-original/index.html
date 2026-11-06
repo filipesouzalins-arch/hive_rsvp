@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Convite 8 anos</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Nunito:wght@600;800;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#00843D}
+a{color:#002776}a:hover{color:#001A52}
+@keyframes quica{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-22px) rotate(60deg)}}
+@keyframes balanca{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(-1.5deg)}}
+@keyframes brilha{0%,100%{opacity:.35}50%{opacity:1}}
+.quica{animation:quica 1.8s ease-in-out infinite}
+.balanca{animation:balanca 3.2s ease-in-out infinite;transform-origin:center}
+.brilha{animation:brilha 2.4s ease-in-out infinite}
+input:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #FFD21F;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.quica,.balanca,.brilha{animation:none}}
+</style>
+</helmet>
+
+<div style="font-family: 'Nunito', system-ui, sans-serif; color: #002776; background: #00843D; overflow: hidden">
+
+  <!-- ═════════ HERO ═════════ -->
+  <header style="position: relative; overflow: hidden; background: #00843D; padding: 36px 16px 64px; display: flex; flex-direction: column; align-items: center">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.16) 1.6px, transparent 1.8px); background-size: 16px 16px"></div>
+    <div aria-hidden="true" style="position: absolute; left: -25%; top: 62%; width: 150%; height: 120px; background: #FFD21F; transform: rotate(-9deg); border-radius: 50%"></div>
+    <div aria-hidden="true" style="position: absolute; left: -25%; top: 70%; width: 150%; height: 160px; background: #00A64F; transform: rotate(-6deg); border-radius: 50%"></div>
+    <div aria-hidden="true" style="position: absolute; left: -30%; top: 84%; width: 160%; height: 200px; background: #006B31; transform: rotate(-4deg); border-radius: 50%"></div>
+
+    <svg aria-hidden="true" viewBox="0 0 600 420" style="position: absolute; top: 70px; left: 50%; transform: translateX(-50%); width: min(620px, 130vw)">
+      <polygon points="300,10 590,210 300,410 10,210" fill="#FFD21F"></polygon>
+      <circle cx="300" cy="210" r="118" fill="#002776"></circle>
+      <path d="M186 186 Q300 150 414 214" fill="none" stroke="#FFFFFF" stroke-width="16"></path>
+      <g fill="#FFFFFF">
+        <circle cx="250" cy="240" r="4"></circle><circle cx="285" cy="262" r="3"></circle><circle cx="320" cy="250" r="4"></circle>
+        <circle cx="350" cy="280" r="3"></circle><circle cx="300" cy="295" r="5"></circle><circle cx="262" cy="282" r="3"></circle>
+        <circle cx="365" cy="240" r="3"></circle><circle cx="230" cy="265" r="2.5"></circle><circle cx="330" cy="310" r="2.5"></circle>
+      </g>
+    </svg>
+
+    <svg aria-hidden="true" class="brilha" viewBox="0 0 24 24" style="position: absolute; top: 40px; left: 8%; width: 34px; fill: #FFD21F"><path d="M12 1l3.1 7.2 7.9.6-6 5.1 1.9 7.6L12 17.4 5.1 21.5 7 13.9 1 8.8l7.9-.6z"></path></svg>
+    <svg aria-hidden="true" class="brilha" viewBox="0 0 24 24" style="position: absolute; top: 300px; right: 7%; width: 28px; fill: #FFD21F; animation-delay: 1.1s"><path d="M12 1l3.1 7.2 7.9.6-6 5.1 1.9 7.6L12 17.4 5.1 21.5 7 13.9 1 8.8l7.9-.6z"></path></svg>
+    <svg aria-hidden="true" class="brilha" viewBox="0 0 24 24" style="position: absolute; top: 120px; right: 16%; width: 18px; fill: #FFFFFF; animation-delay: .6s"><path d="M12 1l3.1 7.2 7.9.6-6 5.1 1.9 7.6L12 17.4 5.1 21.5 7 13.9 1 8.8l7.9-.6z"></path></svg>
+
+    <p style="position: relative; margin: 0; background: #FFFFFF; color: #002776; font-weight: 900; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; padding: 10px 20px; border-radius: 999px; border: 3px solid #002776; box-shadow: 0 5px 0 #002776">Você foi convocado!</p>
+
+    <div style="position: relative; width: min(330px, 78vw); margin-top: 22px">
+      <svg role="img" aria-label="Camisa amarela número 8" viewBox="0 0 300 290" style="width: 100%; display: block; filter: drop-shadow(0 10px 0 rgba(0,39,118,.35))">
+        <path d="M96 28 L132 16 Q150 38 168 16 L204 28 L276 78 L246 132 L214 114 L214 274 Q150 284 86 274 L86 114 L54 132 L24 78 Z" fill="#FFD21F" stroke="#002776" stroke-width="7" stroke-linejoin="round"></path>
+        <path d="M132 16 Q150 38 168 16" fill="none" stroke="#00843D" stroke-width="12" stroke-linecap="round"></path>
+        <path d="M30 86 L54 132" stroke="#00843D" stroke-width="12" stroke-linecap="round"></path>
+        <path d="M270 86 L246 132" stroke="#00843D" stroke-width="12" stroke-linecap="round"></path>
+        <path d="M90 262 Q150 272 210 262" fill="none" stroke="#00843D" stroke-width="8" stroke-linecap="round"></path>
+        <text x="150" y="232" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="190" fill="#00843D" stroke="#002776" stroke-width="7" paint-order="stroke fill">8</text>
+      </svg>
+      <svg aria-hidden="true" class="quica" viewBox="0 0 100 100" style="position: absolute; top: -18px; right: -34px; width: 92px">
+        <defs><clipPath id="bolaHero"><circle cx="50" cy="50" r="44"></circle></clipPath></defs>
+        <circle cx="50" cy="50" r="44" fill="#FFFFFF"></circle>
+        <g clip-path="url(#bolaHero)" fill="#002776">
+          <polygon points="50,34 65,45 59,62 41,62 35,45"></polygon>
+          <polygon points="50,2 64,10 58,22 42,22 36,10"></polygon>
+          <polygon points="94,40 98,58 86,64 76,52 82,38"></polygon>
+          <polygon points="76,88 66,100 52,96 56,82 70,78"></polygon>
+          <polygon points="24,88 34,100 48,96 44,82 30,78"></polygon>
+          <polygon points="6,40 2,58 14,64 24,52 18,38"></polygon>
+        </g>
+        <circle cx="50" cy="50" r="44" fill="none" stroke="#002776" stroke-width="5"></circle>
+      </svg>
+    </div>
+
+    <h1 class="balanca" style="position: relative; margin: -18px 0 0; font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: clamp(92px, 26vw, 150px); line-height: .9; color: #FFD21F; -webkit-text-stroke: 4px #002776; text-shadow: 0 8px 0 #002776; letter-spacing: .02em">ANOS</h1>
+
+    <p style="position: relative; margin: 28px 0 0; max-width: 460px; text-align: center; font-weight: 900; font-size: clamp(22px, 5.6vw, 28px); line-height: 1.2; color: #FFFFFF; text-shadow: 0 3px 0 #002776">Convido você para o meu aniversário!</p>
+  </header>
+
+  <!-- ═════════ PLACAR / CONTADOR ═════════ -->
+  <section aria-labelledby="placar-titulo" style="background: #002776; padding: 44px 16px 52px; position: relative">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,210,31,.12) 1.4px, transparent 1.6px); background-size: 14px 14px"></div>
+    <div style="position: relative; max-width: 560px; margin: 0 auto; text-align: center">
+      <sc-if value="{{passou}}" hint-placeholder-val="{{ false }}">
+        <h2 id="placar-titulo" style="margin: 0; font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: 40px; color: #FFD21F">É hoje! Bola rolando</h2>
+      </sc-if>
+      <sc-if value="{{faltando}}" hint-placeholder-val="{{ true }}">
+        <h2 id="placar-titulo" style="margin: 0 0 22px; font-weight: 900; font-size: 14px; letter-spacing: .22em; text-transform: uppercase; color: #FFD21F">Falta pouco pro apito inicial</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+          <sc-for list="{{placar}}" as="p" hint-placeholder-count="4">
+            <div style="background: #001A52; border: 3px solid #FFD21F; border-radius: 16px; padding: 14px 4px 10px; box-shadow: 0 6px 0 #000F33">
+              <div style="font-family: 'Lilita One', sans-serif; font-size: clamp(36px, 10vw, 54px); line-height: 1; color: #FFD21F; font-variant-numeric: tabular-nums">{{p.valor}}</div>
+              <div style="margin-top: 6px; font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #FFFFFF">{{p.rotulo}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ═════════ QUANDO E ONDE ═════════ -->
+  <section aria-labelledby="onde-titulo" style="position: relative; background: #FFF8E1; padding: 0 16px 56px">
+    <svg aria-hidden="true" viewBox="0 0 1440 60" preserveAspectRatio="none" style="display: block; width: calc(100% + 32px); margin: 0 -16px; height: 40px; background: #002776"><path d="M0 60 L0 26 Q120 6 240 24 T480 22 T720 30 T960 18 T1200 28 T1440 20 L1440 60 Z" fill="#FFF8E1"></path></svg>
+    <div style="max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 28px">
+      <p style="margin: 0; font-weight: 900; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: #00843D">Domingo</p>
+      <p style="margin: 6px 0 0; font-family: 'Lilita One', sans-serif; font-size: clamp(44px, 12vw, 60px); line-height: 1; color: #002776">15 de novembro</p>
+
+      <div style="margin-top: 22px; display: flex; align-items: center; gap: 14px">
+        <svg aria-hidden="true" viewBox="0 0 40 24" style="width: 40px; fill: none; stroke: #FFD21F; stroke-width: 4; stroke-linecap: round"><path d="M4 4 L22 10"></path><path d="M2 14 L22 14"></path><path d="M4 22 L22 18"></path></svg>
+        <p style="margin: 0; background: #002776; color: #FFD21F; font-family: 'Lilita One', sans-serif; font-size: clamp(52px, 14vw, 72px); line-height: 1; padding: 10px 30px 14px; border-radius: 34px 12px 40px 14px; transform: rotate(-3deg)">Às 10h</p>
+        <svg aria-hidden="true" viewBox="0 0 40 24" style="width: 40px; fill: none; stroke: #FFD21F; stroke-width: 4; stroke-linecap: round; transform: scaleX(-1)"><path d="M4 4 L22 10"></path><path d="M2 14 L22 14"></path><path d="M4 22 L22 18"></path></svg>
+      </div>
+
+      <h2 id="onde-titulo" style="margin: 34px 0 0; font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: clamp(38px, 10vw, 50px); line-height: 1.05; color: #002776">Chácara da vovó</h2>
+      <p style="margin: 8px 0 0; font-weight: 800; font-size: 19px; color: #002776">Rua Salvio Celani, 45 · Campinas</p>
+
+      <div style="margin-top: 26px; width: 100%; box-sizing: border-box; background: #FFFFFF; border: 4px solid #002776; border-radius: 26px; box-shadow: 0 8px 0 #002776; overflow: hidden">
+        <div aria-hidden="true" style="position: relative; height: 170px; background: #DDF1D2; background-image: linear-gradient(28deg, transparent 46%, #FFFFFF 46%, #FFFFFF 54%, transparent 54%), linear-gradient(-62deg, transparent 47%, #FFFFFF 47%, #FFFFFF 53%, transparent 53%), linear-gradient(90deg, transparent 70%, #CDE8BE 70%), radial-gradient(circle at 20% 30%, #BFE0AC 0 26px, transparent 27px), radial-gradient(circle at 82% 72%, #9FD3F0 0 30px, transparent 31px)">
+          <svg viewBox="0 0 40 52" style="position: absolute; left: 50%; top: 50%; width: 46px; transform: translate(-50%, -78%)"><path d="M20 2C10 2 3 9 3 19c0 12 17 30 17 30s17-18 17-30C37 9 30 2 20 2z" fill="#00843D" stroke="#002776" stroke-width="3"></path><circle cx="20" cy="19" r="6" fill="#FFD21F" stroke="#002776" stroke-width="2.5"></circle></svg>
+        </div>
+        <div style="padding: 18px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=Rua+Salvio+Celani%2C+45%2C+Campinas+SP" style="display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 26px; border-radius: 999px; background: #00843D; color: #FFFFFF; font-weight: 900; font-size: 17px; text-decoration: none; border: 3px solid #002776; box-shadow: 0 5px 0 #002776">
+            <svg aria-hidden="true" viewBox="0 0 24 24" style="width: 20px; fill: none; stroke: #FFFFFF; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round"><path d="M3 11l18-8-8 18-2-8-8-2z"></path></svg>
+            Abrir no Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ ESCALAÇÃO DO DIA ═════════ -->
+  <section aria-labelledby="escalacao-titulo" style="background: #FFF8E1; padding: 8px 16px 56px">
+    <div style="max-width: 560px; margin: 0 auto">
+      <h2 id="escalacao-titulo" style="margin: 0 0 20px; text-align: center; font-weight: 900; font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: #00843D">Escalação do dia</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+        <div style="background: #FFFFFF; border: 3px solid #002776; border-radius: 20px; padding: 16px 6px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 6px 0 #00843D">
+          <svg aria-hidden="true" viewBox="0 0 80 64" style="width: 72px">
+            <path d="M6 58 L74 8" stroke="#8A5A2B" stroke-width="5" stroke-linecap="round"></path>
+            <g stroke="#3B1F0B" stroke-width="2.5">
+              <rect x="16" y="36" width="14" height="16" rx="4" fill="#B5652E" transform="rotate(-36 23 44)"></rect>
+              <rect x="29" y="27" width="14" height="16" rx="4" fill="#9C4F22" transform="rotate(-36 36 35)"></rect>
+              <rect x="42" y="18" width="14" height="16" rx="4" fill="#B5652E" transform="rotate(-36 49 26)"></rect>
+              <rect x="55" y="9" width="12" height="14" rx="4" fill="#9C4F22" transform="rotate(-36 61 16)"></rect>
+            </g>
+            <g stroke="#FFB800" stroke-width="3" stroke-linecap="round"><path d="M14 18 L18 26"></path><path d="M24 10 L26 20"></path><path d="M6 28 L14 32"></path></g>
+          </svg>
+          <p style="margin: 0; font-family: 'Lilita One', sans-serif; font-size: 20px; line-height: 1.1; text-align: center; color: #002776">Churrasco</p>
+        </div>
+        <div style="background: #FFFFFF; border: 3px solid #002776; border-radius: 20px; padding: 16px 6px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 6px 0 #00843D">
+          <svg aria-hidden="true" viewBox="0 0 80 64" style="width: 72px">
+            <circle cx="40" cy="34" r="20" fill="none" stroke="#002776" stroke-width="20"></circle>
+            <circle cx="40" cy="34" r="20" fill="none" stroke="#2F80ED" stroke-width="14"></circle>
+            <circle cx="40" cy="34" r="20" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-dasharray="15.7 15.7"></circle>
+            <g fill="#2F80ED"><path d="M10 10 q-4 6 0 8 q4 -2 0 -8z"></path><path d="M70 8 q-4 6 0 8 q4 -2 0 -8z"></path><path d="M74 26 q-3 5 0 6 q3 -1 0 -6z"></path></g>
+          </svg>
+          <p style="margin: 0; font-family: 'Lilita One', sans-serif; font-size: 20px; line-height: 1.1; text-align: center; color: #002776">Piscina</p>
+        </div>
+        <div style="background: #FFFFFF; border: 3px solid #002776; border-radius: 20px; padding: 16px 6px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; box-shadow: 0 6px 0 #00843D">
+          <svg aria-hidden="true" viewBox="0 0 80 64" style="width: 72px">
+            <g fill="#D7EEFF" stroke="#2F80ED" stroke-width="2">
+              <circle cx="16" cy="48" r="10"></circle><circle cx="64" cy="48" r="11"></circle><circle cx="28" cy="56" r="7"></circle><circle cx="54" cy="58" r="6"></circle>
+              <circle cx="66" cy="14" r="5"></circle><circle cx="12" cy="18" r="4"></circle><circle cx="72" cy="28" r="3"></circle>
+            </g>
+            <defs><clipPath id="bolaSabao"><circle cx="40" cy="32" r="20"></circle></clipPath></defs>
+            <circle cx="40" cy="32" r="20" fill="#FFFFFF"></circle>
+            <g clip-path="url(#bolaSabao)" fill="#002776">
+              <polygon points="40,25 47,30 44,38 36,38 33,30"></polygon>
+              <polygon points="40,10 47,14 44,19 36,19 33,14"></polygon>
+              <polygon points="60,28 62,36 56,39 52,33 55,26"></polygon>
+              <polygon points="20,28 18,36 24,39 28,33 25,26"></polygon>
+              <polygon points="50,52 45,57 38,55 40,48 47,46"></polygon>
+            </g>
+            <circle cx="40" cy="32" r="20" fill="none" stroke="#002776" stroke-width="3"></circle>
+          </svg>
+          <p style="margin: 0; font-family: 'Lilita One', sans-serif; font-size: 20px; line-height: 1.1; text-align: center; color: #002776">Futebol de sabão</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ REGRA DA PARTIDA ═════════ -->
+  <section style="background: #FFF8E1; padding: 0 16px 64px">
+    <div style="max-width: 520px; margin: 0 auto; background: #FFD21F; border: 4px solid #002776; border-radius: 999px; box-shadow: 0 7px 0 #002776; padding: 14px 28px; display: flex; align-items: center; justify-content: center; gap: 16px; transform: rotate(-2deg)">
+      <svg aria-hidden="true" viewBox="0 0 24 24" style="width: 34px; flex-shrink: 0; fill: none; stroke: #002776; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M5 8h14l-1.5 11a2 2 0 0 1-2 1.7h-7a2 2 0 0 1-2-1.7z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></svg>
+      <div style="text-align: left">
+        <p style="margin: 0; font-weight: 900; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #002776">Regra da partida</p>
+        <p style="margin: 2px 0 0; font-family: 'Lilita One', sans-serif; font-size: clamp(28px, 8vw, 38px); line-height: 1; color: #002776">Levar kit churras</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ RSVP ═════════ -->
+  <section aria-labelledby="rsvp-titulo" style="position: relative; background: #00843D; padding: 64px 16px 72px; overflow: hidden">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.14) 1.6px, transparent 1.8px); background-size: 16px 16px"></div>
+    <div aria-hidden="true" style="position: absolute; left: -30%; top: -40px; width: 160%; height: 110px; background: #FFF8E1; border-radius: 0 0 50% 50%"></div>
+
+    <div style="position: relative; max-width: 520px; margin: 40px auto 0; background: #FFFFFF; border: 4px solid #002776; border-radius: 30px; box-shadow: 0 10px 0 #002776; padding: 30px 22px 28px">
+
+      <sc-if value="{{naoEnviado}}" hint-placeholder-val="{{ true }}">
+        <h2 id="rsvp-titulo" style="margin: 0; text-align: center; font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: clamp(34px, 9vw, 44px); line-height: 1.05; color: #002776">Vai entrar em campo?</h2>
+        <p style="margin: 10px 0 24px; text-align: center; font-weight: 700; font-size: 16px; line-height: 1.45; color: #1F3B73">Confirme sua presença para eu guardar seu lugar no time.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="rsvp-nome" style="font-weight: 900; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #002776">Seu nome</label>
+            <input id="rsvp-nome" type="text" autocomplete="name" placeholder="Nome e sobrenome" value="{{nome}}" onChange="{{onNome}}" style="min-height: 52px; box-sizing: border-box; width: 100%; padding: 0 16px; border: 3px solid #002776; border-radius: 16px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 17px; color: #002776; background: #FFF8E1">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="rsvp-fone" style="font-weight: 900; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #002776">WhatsApp</label>
+            <input id="rsvp-fone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(19) 9 0000-0000" value="{{fone}}" onChange="{{onFone}}" style="min-height: 52px; box-sizing: border-box; width: 100%; padding: 0 16px; border: 3px solid #002776; border-radius: 16px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 17px; color: #002776; background: #FFF8E1">
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+            <div style="border: 3px solid #002776; border-radius: 18px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+              <p style="margin: 0; font-weight: 900; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #002776">Adultos</p>
+              <div style="display: flex; align-items: center; gap: 12px">
+                <button type="button" aria-label="Diminuir adultos" onClick="{{decA}}" style="width: 44px; height: 44px; border-radius: 50%; border: 3px solid #002776; background: #FFFFFF; color: #002776; font-family: 'Lilita One', sans-serif; font-size: 24px; line-height: 1; cursor: pointer">−</button>
+                <span aria-live="polite" style="min-width: 28px; text-align: center; font-family: 'Lilita One', sans-serif; font-size: 32px; color: #002776">{{adultos}}</span>
+                <button type="button" aria-label="Aumentar adultos" onClick="{{incA}}" style="width: 44px; height: 44px; border-radius: 50%; border: 3px solid #002776; background: #FFD21F; color: #002776; font-family: 'Lilita One', sans-serif; font-size: 24px; line-height: 1; cursor: pointer">+</button>
+              </div>
+            </div>
+            <div style="border: 3px solid #002776; border-radius: 18px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px">
+              <p style="margin: 0; font-weight: 900; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #002776">Crianças</p>
+              <div style="display: flex; align-items: center; gap: 12px">
+                <button type="button" aria-label="Diminuir crianças" onClick="{{decC}}" style="width: 44px; height: 44px; border-radius: 50%; border: 3px solid #002776; background: #FFFFFF; color: #002776; font-family: 'Lilita One', sans-serif; font-size: 24px; line-height: 1; cursor: pointer">−</button>
+                <span aria-live="polite" style="min-width: 28px; text-align: center; font-family: 'Lilita One', sans-serif; font-size: 32px; color: #002776">{{criancas}}</span>
+                <button type="button" aria-label="Aumentar crianças" onClick="{{incC}}" style="width: 44px; height: 44px; border-radius: 50%; border: 3px solid #002776; background: #FFD21F; color: #002776; font-family: 'Lilita One', sans-serif; font-size: 24px; line-height: 1; cursor: pointer">+</button>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{temErro}}" hint-placeholder-val="{{ false }}">
+            <p role="alert" style="margin: 0; padding: 10px 14px; border-radius: 12px; background: #FDE7E7; color: #9B1C1C; font-weight: 800; font-size: 15px">{{erro}}</p>
+          </sc-if>
+
+          <button type="button" onClick="{{enviar}}" style="min-height: 60px; border-radius: 999px; border: 4px solid #002776; background: #FFD21F; color: #002776; font-family: 'Lilita One', sans-serif; font-size: 26px; box-shadow: 0 6px 0 #002776; cursor: pointer">Confirmar presença</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{enviado}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+          <svg aria-hidden="true" viewBox="0 0 80 80" style="width: 84px"><circle cx="40" cy="40" r="36" fill="#00843D" stroke="#002776" stroke-width="5"></circle><path d="M24 41 L35 52 L57 29" fill="none" stroke="#FFD21F" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <h2 style="margin: 0; font-family: 'Lilita One', sans-serif; font-weight: 400; font-size: clamp(32px, 8.5vw, 42px); line-height: 1.05; color: #002776">Tá convocado, {{primeiroNome}}!</h2>
+          <p style="margin: 0; font-weight: 800; font-size: 17px; color: #1F3B73">{{totalTxt}} na lista. Te espero na chácara!</p>
+          <a href="{{waHref}}" target="_blank" rel="noopener" style="margin-top: 8px; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; background: #00843D; color: #FFFFFF; font-weight: 900; font-size: 17px; text-decoration: none; border: 3px solid #002776; box-shadow: 0 5px 0 #002776">
+            <svg aria-hidden="true" viewBox="0 0 24 24" style="width: 22px; fill: none; stroke: #FFFFFF; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"></path><path d="M9 10.5c.5 1.8 1.7 3 3.5 3.5"></path></svg>
+            Avisar também pelo WhatsApp
+          </a>
+          <button type="button" onClick="{{editar}}" style="min-height: 44px; padding: 0 16px; border: none; background: transparent; color: #002776; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; text-decoration: underline; cursor: pointer">Editar minha resposta</button>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- ═════════ RODAPÉ ═════════ -->
+  <footer style="background: #002776; padding: 30px 16px 34px; text-align: center">
+    <p style="margin: 0; font-family: 'Lilita One', sans-serif; font-size: 26px; color: #FFD21F">Te espero lá!</p>
+    <p style="margin: 6px 0 0; font-weight: 800; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: #FFFFFF">15.11.2026 · Campinas</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3000}}'>
+class Component extends DCLogic {
+  state = { now: Date.now(), nome: '', fone: '', adultos: 1, criancas: 0, enviado: false, erro: '' };
+
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: Date.now() }), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const alvo = new Date('2026-11-15T10:00:00-03:00').getTime();
+    const diff = Math.max(0, alvo - s.now);
+    const pad = (n) => String(n).padStart(2, '0');
+    const placar = [
+      { valor: pad(Math.floor(diff / 864e5)), rotulo: 'dias' },
+      { valor: pad(Math.floor(diff / 36e5) % 24), rotulo: 'horas' },
+      { valor: pad(Math.floor(diff / 6e4) % 60), rotulo: 'min' },
+      { valor: pad(Math.floor(diff / 1e3) % 60), rotulo: 'seg' }
+    ];
+
+    const mascara = (v) => {
+      const d = String(v).replace(/\D/g, '').slice(0, 11);
+      if (d.length <= 2) return d;
+      if (d.length <= 6) return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+      if (d.length <= 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+      return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    };
+    const plural = (n, um, varios) => n + ' ' + (n === 1 ? um : varios);
+    const partes = [];
+    if (s.adultos > 0) partes.push(plural(s.adultos, 'adulto', 'adultos'));
+    if (s.criancas > 0) partes.push(plural(s.criancas, 'criança', 'crianças'));
+    const totalTxt = partes.join(' e ') || 'Ninguém';
+    const nomeLimpo = s.nome.trim();
+    const msg = 'Oi! Confirmo presença no aniversário de 8 anos (domingo, 15/11, às 10h, na Chácara da vovó). '
+      + 'Nome: ' + nomeLimpo + ' · ' + totalTxt + '.';
+
+    return {
+      placar,
+      passou: diff === 0,
+      faltando: diff > 0,
+      nome: s.nome,
+      fone: s.fone,
+      adultos: s.adultos,
+      criancas: s.criancas,
+      erro: s.erro,
+      temErro: !!s.erro,
+      enviado: s.enviado,
+      naoEnviado: !s.enviado,
+      primeiroNome: nomeLimpo.split(' ')[0] || 'craque',
+      totalTxt,
+      waHref: 'https://wa.me/?text=' + encodeURIComponent(msg),
+      onNome: (e) => this.setState({ nome: e.target.value, erro: '' }),
+      onFone: (e) => this.setState({ fone: mascara(e.target.value), erro: '' }),
+      incA: () => this.setState({ adultos: Math.min(10, s.adultos + 1), erro: '' }),
+      decA: () => this.setState({ adultos: Math.max(0, s.adultos - 1) }),
+      incC: () => this.setState({ criancas: Math.min(10, s.criancas + 1), erro: '' }),
+      decC: () => this.setState({ criancas: Math.max(0, s.criancas - 1) }),
+      enviar: () => {
+        if (nomeLimpo.length < 3) return this.setState({ erro: 'Escreva seu nome e sobrenome.' });
+        if (s.fone.replace(/\D/g, '').length < 10) return this.setState({ erro: 'Informe um WhatsApp com DDD.' });
+        if (s.adultos + s.criancas < 1) return this.setState({ erro: 'Conte pelo menos uma pessoa.' });
+        this.setState({ enviado: true, erro: '' });
+      },
+      editar: () => this.setState({ enviado: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

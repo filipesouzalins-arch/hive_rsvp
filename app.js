@@ -342,7 +342,7 @@ function paintEvent(event) {
       <section class="section alt" id="dresscode">
         <div class="shell">
           <div class="dress-panel fade-up">
-            <span class="eyebrow">Dress code</span>
+            <span class="eyebrow">${esc(copy.dressEyebrow || 'Dress code')}</span>
             <h3>${esc(copy.headingDress || 'Entre no clima.')}</h3>
             <p>${esc(event.dressCode)}</p>
             ${(event.content.pantone || []).length ? `<div class="pantone-row">${event.content.pantone.map(cor => `<div class="pantone-item"><span class="pantone-dot" style="background:${esc(cor.hex)}"></span><small>${esc(cor.nome)}</small></div>`).join('')}</div>` : ''}
@@ -373,8 +373,8 @@ function paintEvent(event) {
         <div class="shell rsvp-layout">
           <div class="fade-up">
             ${(copy.rsvpEyebrow ?? 'Confirme sua presença') ? `<span class="eyebrow">${esc(copy.rsvpEyebrow ?? 'Confirme sua presença')}</span>` : ''}
-            <h2 class="section-heading">Sua presença faz parte da festa.</h2>
-            <p class="lead">Confirme abaixo para que possamos preparar tudo com carinho. A confirmação é válida apenas para este dia.</p>
+            <h2 class="section-heading">${esc(copy.rsvpTitulo || 'Sua presença faz parte da festa.')}</h2>
+            <p class="lead">${esc(copy.rsvpTexto || 'Confirme abaixo para que possamos preparar tudo com carinho. A confirmação é válida apenas para este dia.')}</p>
           </div>
           <div id="rsvp-container" class="fade-up">${rsvpFormMarkup(event)}</div>
         </div>
@@ -763,7 +763,10 @@ function adminEditorMarkup(event, templates) {
         ${adminField('localEndereco','Endereço',event.local.endereco)}
         <div class="field full"><label>URL de incorporação do Maps</label><input name="mapsUrl" value="${esc(event.local.mapsUrl)}" /></div>
         <div class="field full"><label>URL “Como chegar”</label><input name="directionsUrl" value="${esc(event.local.directionsUrl || '')}" /></div>
-        <div class="field full"><label>Título do dress code</label><input name="headingDress" value="${esc(event.copy?.headingDress || '')}" placeholder="Ex.: Todo mundo de branco." /></div>
+        <div class="field"><label>Rótulo da seção dress code</label><input name="dressEyebrow" value="${esc(event.copy?.dressEyebrow || '')}" placeholder="Padrão: Dress code" /></div>
+        <div class="field"><label>Título do dress code</label><input name="headingDress" value="${esc(event.copy?.headingDress || '')}" placeholder="Ex.: Todo mundo de branco." /></div>
+        <div class="field full"><label>Título da confirmação de presença</label><input name="rsvpTitulo" value="${esc(event.copy?.rsvpTitulo || '')}" placeholder="Padrão: Sua presença faz parte da festa." /></div>
+        <div class="field full"><label>Texto antes do formulário</label><textarea name="rsvpTexto" placeholder="Padrão: Confirme abaixo para que possamos preparar tudo com carinho...">${esc(event.copy?.rsvpTexto || '')}</textarea></div>
         <div class="field full"><label>Dress code</label><textarea name="dressCode">${esc(event.dressCode)}</textarea></div>
         ${adminField('whatsappNumero','WhatsApp com DDI',event.whatsapp.numero)}
         <div class="field"><label>Máximo de acompanhantes</label><input type="number" name="maxAcompanhantes" min="0" max="20" value="${event.maxAcompanhantes}" /></div>
@@ -841,7 +844,7 @@ function initAdminEditor(event) {
       dressCode: fd.get('dressCode'),
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
-      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim(), eyebrow: String(fd.get('copyEyebrow') || '').trim() },
+      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim(), eyebrow: String(fd.get('copyEyebrow') || '').trim(), dressEyebrow: String(fd.get('dressEyebrow') || '').trim(), rsvpTitulo: String(fd.get('rsvpTitulo') || '').trim(), rsvpTexto: String(fd.get('rsvpTexto') || '').trim() },
       instagram: String(fd.get('instagramLinks') || '').split('\n')
         .map(linha => linha.trim()).filter(Boolean)
         .map(linha => {
