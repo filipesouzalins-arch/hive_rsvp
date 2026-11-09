@@ -148,8 +148,19 @@
   font-size: clamp(1rem, 3.6vw, 1.3rem);
 }
 
-/* ─── Dress code: pílula amarela torta com a sacolinha ─── */
-.theme-convocacao-original #dresscode { background: var(--tpl-creme, #FFF8E1); padding: 0 0 72px; }
+/* Cartões de atividades (churrasco, piscina, futebol de sabão) */
+.theme-convocacao-original .atividade-card {
+  background: #FFFFFF; border: 3px solid var(--tpl-azul, #002776); border-radius: 20px;
+  box-shadow: 0 6px 0 var(--tpl-verde, #00843D);
+}
+.theme-convocacao-original .atividade-card p {
+  font-family: 'Lilita One', var(--sans); font-weight: 400; font-size: 20px;
+  line-height: 1.1; color: var(--tpl-azul, #002776);
+}
+
+/* ─── Dress code: pílula amarela torta com a sacolinha ───
+   padding-top abriga os cantos da pílula girada (overflow:hidden da seção cortava) */
+.theme-convocacao-original #dresscode { background: var(--tpl-creme, #FFF8E1); padding: 28px 0 80px; }
 .theme-convocacao-original #dresscode .shell { max-width: 560px; }
 .theme-convocacao-original .dress-panel {
   background: var(--tpl-amarelo, #FFD21F); color: var(--tpl-azul, #002776);

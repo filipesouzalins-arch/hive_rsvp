@@ -308,7 +308,7 @@ function paintEvent(event) {
       <nav class="event-nav">
         <div class="event-nav-links">
           <a href="#detalhes">Detalhes</a>
-          ${event.secoes.dressCode ? '<a href="#dresscode">Dress code</a>' : ''}
+          ${event.secoes.dressCode ? `<a href="#dresscode">${esc(copy.dressEyebrow || 'Dress code')}</a>` : ''}
           ${event.secoes.mapa ? '<a href="#local">Local</a>' : ''}
           <a class="rsvp-nav" href="#confirmar">Confirmar presença</a>
         </div>
@@ -340,6 +340,7 @@ function paintEvent(event) {
             <article class="detail-card"><span class="detail-label">Horário</span><div class="detail-value">A partir das ${esc(formatTime(event.dataHora))}</div></article>
             <article class="detail-card"><span class="detail-label">Celebração</span><div class="detail-value">${esc(copy.celebracao || event.nome)}</div></article>
           </div>
+          ${(event.content.atividades || []).length ? `<div class="atividades-grid fade-up">${event.content.atividades.map(a => `<div class="atividade-card">${a.imagem ? `<img src="${esc(a.imagem)}" alt="" loading="lazy" />` : ''}<p>${esc(a.nome || '')}</p></div>`).join('')}</div>` : ''}
         </div>
       </section>` : `<div id="detalhes"></div>`}
 
@@ -764,6 +765,7 @@ function adminEditorMarkup(event, templates) {
         <div class="field full"><label>Tagline</label><input name="tagline" value="${esc(event.tagline)}" /></div>
         <div class="field full"><label>Título da apresentação</label><input name="headingDescricao" value="${esc(event.copy?.headingDescricao || '')}" placeholder="Ex.: Um domingo com o melhor do Brasil." /></div>
         <div class="field full"><label>Descrição</label><textarea name="descricao">${esc(event.descricao)}</textarea></div>
+        <div class="field full"><label>Atividades da festa (uma por linha: Nome | URL da imagem)</label><textarea name="atividades" placeholder="Churrasco | /assets/convocacao-original/churrasco.svg">${esc((event.content.atividades || []).map(a => `${a.nome || ''} | ${a.imagem || ''}`).join('\n'))}</textarea><small style="opacity:.62;font-size:.72rem;line-height:1.5">Cartões ilustrados exibidos na seção de detalhes. Deixe vazio para não mostrar.</small></div>
         ${adminField('localNome','Nome do local',event.local.nome)}
         ${adminField('localEndereco','Endereço',event.local.endereco)}
         <div class="field full"><label>URL de incorporação do Maps</label><input name="mapsUrl" value="${esc(event.local.mapsUrl)}" /></div>
@@ -850,6 +852,13 @@ function initAdminEditor(event) {
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
       copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim(), eyebrow: String(fd.get('copyEyebrow') || '').trim(), dressEyebrow: String(fd.get('dressEyebrow') || '').trim(), rsvpTitulo: String(fd.get('rsvpTitulo') || '').trim(), rsvpTexto: String(fd.get('rsvpTexto') || '').trim() },
+      atividades: String(fd.get('atividades') || '').split('\n')
+        .map(linha => linha.trim()).filter(Boolean)
+        .map(linha => {
+          const [nome, imagem] = linha.split('|').map(parte => parte.trim());
+          return { nome: nome || '', imagem: imagem || '' };
+        })
+        .filter(item => item.nome || item.imagem),
       instagram: String(fd.get('instagramLinks') || '').split('\n')
         .map(linha => linha.trim()).filter(Boolean)
         .map(linha => {
