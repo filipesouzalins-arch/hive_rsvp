@@ -31,6 +31,12 @@
 .theme-convocacao-original .hero-overlay { background: transparent; }
 .theme-convocacao-original .hero-content {
   display: flex; flex-direction: column; align-items: center; text-align: center;
+  /* Folga para o menu fixo: o conteúdo deste hero é mais alto que a tela,
+     então começa no topo e o selo ficava colado/embaixo do menu */
+  padding-top: 130px;
+  /* Largura em vw (definida): com % o grid do hero infla a coluna pelo
+     max-content do brasão (mais largo que a tela) e desloca tudo p/ direita */
+  width: min(1040px, calc(100vw - 36px));
 }
 .theme-convocacao-original .scroll-cue { display: none; }
 
@@ -61,10 +67,11 @@
 /* Brasão (distintivo + camisa 8 + bola num único SVG) + ANOS + tagline */
 .theme-convocacao-original .convo-camisa {
   width: min(620px, 130vw); max-width: none; margin-top: 6px;
-  /* margens laterais simétricas (negativas no mobile): centraliza o SVG mais
-     largo que a coluna sem deslocar o layout nem criar scroll horizontal */
-  margin-inline: calc((100% - min(620px, 130vw)) / 2);
-  position: relative; z-index: 1;
+  /* Centralização determinística do SVG mais largo que a coluna (funciona
+     igual em Chrome e Safari): ancora no início e desloca metade da largura */
+  align-self: flex-start;
+  position: relative; left: 50%; transform: translateX(-50%);
+  z-index: 1;
 }
 .theme-convocacao-original .convo-anos {
   /* Sobe o ANOS até a barra da camisa (o losango desce 13,3% da largura além dela) */
@@ -265,6 +272,9 @@
 .theme-convocacao-original .social-glass { background: rgba(255,255,255,.12); border-color: rgba(255,210,31,.4); color: #FFF8E1; }
 
 /* ─── Responsivo ─── */
+@media (max-width: 420px) {
+  .theme-convocacao-original .event-nav-links a { padding: 10px 8px; font-size: .7rem; }
+}
 @media (max-width: 640px) {
   .theme-convocacao-original .estrela-b { right: 5%; }
   .theme-convocacao-original .dress-panel { border-radius: 34px; }
