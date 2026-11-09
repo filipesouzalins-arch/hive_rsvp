@@ -496,7 +496,7 @@ function rsvpFormMarkup(event) {
         <div class="field"><label for="telefone">WhatsApp</label><input id="telefone" name="telefone" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" maxlength="15" /><span class="field-error" data-error="telefone"></span></div>
         <div class="field"><label for="acompanhantes">Acompanhantes</label><select id="acompanhantes" name="acompanhantes">${companionOptions}</select><span class="field-error"></span></div>
         ${event.coletaRestricao ? '<div class="field full"><label for="restricao">Restrição alimentar <small>(opcional)</small></label><input id="restricao" name="restricaoAlimentar" maxlength="300" placeholder="Ex.: vegetariano, alergia a amendoim..." /></div>' : ''}
-        <div class="field full"><label for="observacoes">${esc(event.copy?.notesLabel || 'Observações')} <small>(opcional)</small></label><textarea id="observacoes" name="observacoes" maxlength="1000" placeholder="Escreva aqui alguma informação importante."></textarea></div>
+        <div class="field full"><label for="observacoes">${esc(event.copy?.notesLabel || 'Observações')} <small>(opcional)</small></label><textarea id="observacoes" name="observacoes" maxlength="1000" placeholder="${esc(event.copy?.notesPlaceholder || 'Escreva aqui alguma informação importante.')}"></textarea></div>
       </div>
       ${giftBlockMarkup(event)}
       <div class="form-foot">
@@ -778,6 +778,7 @@ function adminEditorMarkup(event, templates) {
         ${adminField('whatsappNumero','WhatsApp com DDI',event.whatsapp.numero)}
         <div class="field"><label>Máximo de acompanhantes</label><input type="number" name="maxAcompanhantes" min="0" max="20" value="${event.maxAcompanhantes}" /></div>
         <div class="field"><label>Título do campo de mensagem</label><input name="notesLabel" value="${esc(event.copy?.notesLabel || 'Observações')}" /></div>
+        <div class="field full"><label>Texto de exemplo do campo de mensagem</label><input name="notesPlaceholder" value="${esc(event.copy?.notesPlaceholder || '')}" placeholder="Padrão: Escreva aqui alguma informação importante." /></div>
         <div class="field full"><label>Título ao compartilhar o link</label><input name="metaTitle" value="${esc(event.meta?.title || '')}" placeholder="Ex.: F70 — Celebração de 70 anos" /><small style="opacity:.62;font-size:.72rem;line-height:1.5">Aparece na prévia do WhatsApp e redes sociais.</small></div>
         <div class="field full"><label>Descrição ao compartilhar o link</label><textarea name="metaDescription" placeholder="Texto curto exibido abaixo do título na prévia.">${esc(event.meta?.description || '')}</textarea></div>
         <div class="field full"><label>Texto do rodapé</label><textarea name="copyFooter" placeholder="Mensagem exibida no rodapé do convite.">${esc(event.copy?.footer || '')}</textarea></div>
@@ -851,7 +852,7 @@ function initAdminEditor(event) {
       dressCode: fd.get('dressCode'),
       local: { nome: fd.get('localNome'), endereco: fd.get('localEndereco'), mapsUrl: fd.get('mapsUrl'), directionsUrl: fd.get('directionsUrl') },
       whatsapp: { numero: fd.get('whatsappNumero'), habilitado: form.elements.whatsappHabilitado.checked, mensagemTemplate: fd.get('whatsappTemplate') },
-      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim(), eyebrow: String(fd.get('copyEyebrow') || '').trim(), dressEyebrow: String(fd.get('dressEyebrow') || '').trim(), rsvpTitulo: String(fd.get('rsvpTitulo') || '').trim(), rsvpTexto: String(fd.get('rsvpTexto') || '').trim() },
+      copy: { ...(event.content.copy || {}), notesLabel: fd.get('notesLabel'), notesPlaceholder: String(fd.get('notesPlaceholder') || '').trim(), footer: String(fd.get('copyFooter') || '').trim(), headingDescricao: String(fd.get('headingDescricao') || '').trim(), headingDress: String(fd.get('headingDress') || '').trim(), eyebrow: String(fd.get('copyEyebrow') || '').trim(), dressEyebrow: String(fd.get('dressEyebrow') || '').trim(), rsvpTitulo: String(fd.get('rsvpTitulo') || '').trim(), rsvpTexto: String(fd.get('rsvpTexto') || '').trim() },
       atividades: String(fd.get('atividades') || '').split('\n')
         .map(linha => linha.trim()).filter(Boolean)
         .map(linha => {
